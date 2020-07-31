@@ -85,7 +85,6 @@ class TestView(APIView):
         # draw.multiline_text((0, 0), text_test, fill=1, font=font)
         draw.multiline_text((10, 10), text, fill=1, font=font)
         img.show()
-        img_arr = np.array(img)
         response["img"] = self._numpyBool2Str(np.array(img))
         print(len(response["img"]))
         return JsonResponse(response)

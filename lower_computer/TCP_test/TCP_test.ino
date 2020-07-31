@@ -91,7 +91,7 @@ void loop()
 
 void initJsonStr(String &json_str)
 {
-    StaticJsonDocument<1024> doc;              //声明一个JsonDocument对象,
+    StaticJsonDocument<1024> doc;             //声明一个JsonDocument对象,
     JsonObject = root = doc.as<JsonObject>(); //将该对象转换为一个对象节点
 
     JsonObject operation_obj = root.createNestedObject("operation_obj"); //添加一个对象节点
