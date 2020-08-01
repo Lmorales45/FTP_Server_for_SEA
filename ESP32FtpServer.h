@@ -40,8 +40,8 @@
 
 #define FTP_SERVER_VERSION "FTP-2016-01-14"
 
-#define FTP_CTRL_PORT    21          // Command port on wich server is listening  
-#define FTP_DATA_PORT_PASV 50009     // Data port in passive mode
+#define FTP_CTRL_PORT    21          // Command port on wich server is listening  //control connection of FTP
+#define FTP_DATA_PORT_PASV 50009     // Data port in passive mode  //
 
 #define FTP_TIME_OUT  5           // Disconnect client after 5 minutes of inactivity
 #define FTP_CMD_SIZE 255 + 8 // max size of a command
@@ -67,7 +67,7 @@ bool    makeExistsPath( char * path, char * param = NULL );
   void    disconnectClient();
   boolean userIdentity();
   boolean userPassword();
-  boolean processCommand();
+  boolean processCommand();//访问控制命令
   boolean dataConnect();
   boolean doRetrieve();
   boolean doStore();
@@ -81,7 +81,7 @@ bool    makeExistsPath( char * path, char * param = NULL );
   int8_t  readChar();
 
   IPAddress      dataIp;              // IP address of client for data
-  WiFiClient client;
+  WiFiClient client;//建立WiFi客户端对象，对象名称client
   WiFiClient data;
 
   File file;

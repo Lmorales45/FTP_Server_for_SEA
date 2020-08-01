@@ -2,8 +2,8 @@
 #include <WiFiClient.h>
 #include "ESP32FtpServer.h"
 
-const char* ssid = "*********************";
-const char* password = "*********************";
+const char* ssid = "Tenda_2EE7C8";
+const char* password = "sgycsq1930";
 
 
 FtpServer ftpSrv;   //set #define FTP_DEBUG in ESP32FtpServer.h to see ftp verbose on serial
@@ -21,7 +21,7 @@ void setup(void){
 
   WiFi.begin(ssid, password);
   Serial.println("");
-  pinMode(19, INPUT_PULLUP); //pullup GPIO2 for SD_MMC mode, you need 1-15kOm resistor connected to GPIO2 and GPIO19
+ // pinMode(19, INPUT_PULLUP); //pullup GPIO2 for SD_MMC mode, you need 1-15kOm resistor connected to GPIO2 and GPIO19
 
   // Wait for connection
   while (WiFi.status() != WL_CONNECTED) {

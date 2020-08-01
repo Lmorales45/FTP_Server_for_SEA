@@ -30,26 +30,26 @@
 
 
 
-WiFiServer ftpServer( FTP_CTRL_PORT );
-WiFiServer dataServer( FTP_DATA_PORT_PASV );
+WiFiServer ftpServer( FTP_CTRL_PORT );//命令端口
+WiFiServer dataServer( FTP_DATA_PORT_PASV );//数据端口
 
 void FtpServer::begin(String uname, String pword)
 {
-  // Tells the ftp server to begin listening for incoming connection
+  // Tells the ftp server to begin listening for incoming connection接收ftp服务器请求（esp32）
 	_FTP_USER=uname;
 	_FTP_PASS = pword;
-
-	ftpServer.begin();
+  
+	ftpServer.begin();//没有任何结果？WiFiServer::begin(uint16_t port)
 	delay(10);
 	dataServer.begin();	
 	delay(10);
-	millisTimeOut = (uint32_t)FTP_TIME_OUT * 60 * 1000;
+	millisTimeOut = (uint32_t)FTP_TIME_OUT * 60 * 1000;//connect time less than 5minute
 	millisDelay = 0;
 	cmdStatus = 0;
-    iniVariables();
+    iniVariables();//调用begin后直接初始化
 }
 
-void FtpServer::iniVariables()
+void FtpServer::iniVariables()//初始化变量
 {
   // Default for data port
   dataPort = FTP_DATA_PORT_PASV;
@@ -58,33 +58,34 @@ void FtpServer::iniVariables()
   dataPassiveConn = true;
   
   // Set the root directory
-  strcpy( cwdName, "/" );
+  strcpy( cwdName, "/" );//cwdName是当前目录名，这行创建了/路径
 
-  rnfrCmd = false;
-  transferStatus = 0;
+  rnfrCmd = false;//?
+  transferStatus = 0;//初始化只是定义了端口和ftp模式，并未建立传输链路
   
 }
 
-void FtpServer::handleFTP()
+void FtpServer::handleFTP()//这个函数的功能没搞懂
 {
   if((int32_t) ( millisDelay - millis() ) > 0 )
-    return;
+    return;//什么意思？
 
-  if (ftpServer.hasClient()) {
+  if (ftpServer.hasClient()) {//hasclient(也是为了确保有效的TCP连接)检查是否有客户端访问ESP8266开发板所建立的网络服务器
 //  if (ftpServer.available()) {
-	  client.stop();
+	  // client.stop();
 	  client = ftpServer.available();
+    printf("new client\n");
   }
   
   if( cmdStatus == 0 )
-  {
-    if( client.connected())
+  {//cmdStatus=0表示出现某些错误，这将导致重新登陆或者传输中断
+    if( client.connected())//如果有服务器连接则断开
       disconnectClient();
     cmdStatus = 1;
   }
   else if( cmdStatus == 1 )         // Ftp server waiting for connection
   {
-    abortTransfer();
+    abortTransfer();//什么意思？推测是关闭数据传输？
     iniVariables();
     #ifdef FTP_DEBUG
 	Serial.println("Ftp server waiting for connection on port "+ String(FTP_CTRL_PORT));
@@ -104,7 +105,7 @@ void FtpServer::handleFTP()
   else if( readChar() > 0 )         // got response
   {
     if( cmdStatus == 3 )            // Ftp server waiting for user identity
-      if( userIdentity() )
+      if( userIdentity() )//判断用户账号是否输入正确
         cmdStatus = 4;
       else
         cmdStatus = 0;
@@ -153,7 +154,7 @@ void FtpServer::clientConnected()
   #ifdef FTP_DEBUG
 	Serial.println("Client connected!");
   #endif
-  client.println( "220--- Welcome to FTP for ESP8266 ---");
+  client.println( "220--- Welcome to FTP for ESP32 ---");
   client.println( "220---   By David Paiva   ---");
   client.println( "220 --   Version "+ String(FTP_SERVER_VERSION) +"   --");
   iCL = 0;
@@ -170,7 +171,7 @@ void FtpServer::disconnectClient()
 }
 
 boolean FtpServer::userIdentity()
-{	
+{	//验证账户
   if( strcmp( command, "USER" ))
     client.println( "500 Syntax error");
   if( strcmp( parameters, _FTP_USER.c_str() ))
@@ -186,10 +187,10 @@ boolean FtpServer::userIdentity()
 }
 
 boolean FtpServer::userPassword()
-{
+{//验证密码
   if( strcmp( command, "PASS" ))
     client.println( "500 Syntax error");
-  else if( strcmp( parameters, _FTP_PASS.c_str() ))
+  else if( strcmp( parameters, _FTP_PASS.c_str() ))//非零即为true，所以输入密码不正确就成立
     client.println( "530 ");
   else
   {
@@ -205,7 +206,7 @@ boolean FtpServer::userPassword()
 
 boolean FtpServer::processCommand()
 {
-  ///////////////////////////////////////
+  //////////////////////////////////////-
   //                                   //
   //      ACCESS CONTROL COMMANDS      //
   //                                   //
@@ -213,17 +214,17 @@ boolean FtpServer::processCommand()
 
   //
   //  CDUP - Change to Parent Directory 
-  //
-  if( ! strcmp( command, "CDUP" ) || ( ! strcmp( command, "CWD" ) && ! strcmp( parameters, ".." )))
-  {
-	 bool ok = false;
-	 if( strlen( cwdName ) > 1 )            // do nothing if cwdName is root
+  //  CDUP将远程计算机工作目录改为其上一级目录，CWD改变工作目录
+  if( ! strcmp( command, "CDUP" ) || ( ! strcmp( command, "CWD" ) && ! strcmp( parameters, ".." )))//..是什么意思？
+  {//ok作为一个中间变量为布尔类型
+	 bool ok = false;//ok = false表示文件名符合规则不需要修改（不确定）
+	 if( strlen( cwdName ) > 1 )            // do nothing if cwdName is root,  根目录为“/”长度为1
     {
       // if cwdName ends with '/', remove it (must not append)
       if( cwdName[ strlen( cwdName ) - 1 ] == '/' )
         cwdName[ strlen( cwdName ) - 1 ] = 0;
       // search last '/'
-      char * pSep = strrchr( cwdName, '/' );
+      char * pSep = strrchr( cwdName, '/' );//当前文件名中搜索最后一次出现字符 ‘/’位置
       ok = pSep > cwdName;
       // if found, ends the string on its position
       if( ok )
@@ -279,7 +280,7 @@ boolean FtpServer::processCommand()
   //
   //  PWD - Print Directory
   //
-  else if( ! strcmp( command, "PWD" ))
+  else if( ! strcmp( command, "PWD" ))//PWD:打印工作目录，返回主机的当前目录
     client.println( "257 \"" + String(cwdName) + "\" is your current directory");
   //
   //  QUIT
@@ -298,7 +299,7 @@ boolean FtpServer::processCommand()
 
   //
   //  MODE - Transfer Mode 
-  //
+  //设定传输模式（流、块或压缩）
   else if( ! strcmp( command, "MODE" ))
   {
     if( ! strcmp( parameters, "S" ))
@@ -310,7 +311,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  PASV - Passive Connection management
-  //
+  //	进入被动模式
   else if( ! strcmp( command, "PASV" ))
   {
     if (data.connected()) data.stop();
@@ -329,7 +330,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  PORT - Data Port
-  //
+  //指定服务器要连接的地址和端口
   else if( ! strcmp( command, "PORT" ))
   {
 	if (data) data.stop();
@@ -356,7 +357,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  STRU - File Structure
-  //
+  //设定文件传输结构
   else if( ! strcmp( command, "STRU" ))
   {
     if( ! strcmp( parameters, "F" ))
@@ -368,7 +369,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  TYPE - Data Type
-  //
+  //设定传输模式（ASCII/二进制).
   else if( ! strcmp( command, "TYPE" ))
   {
     if( ! strcmp( parameters, "A" ))
@@ -386,7 +387,7 @@ boolean FtpServer::processCommand()
   ///////////////////////////////////////
 
   //
-  //  ABOR - Abort
+  //  ABOR - Abort此命令使服务器终止前一个FTP服务命令以及任何相关数据传输。
   //
   else if( ! strcmp( command, "ABOR" ))
   {
@@ -415,11 +416,8 @@ boolean FtpServer::processCommand()
     }
   }
   //
-  //  LIST - List 
-  //
-
-  
- 
+  //  LIST - List 	
+  //如果指定了文件或目录，返回其信息；否则返回当前工作目录的信息
   else if( ! strcmp( command, "LIST" ))
   {
      if(dataConnect()){
@@ -440,7 +438,7 @@ boolean FtpServer::processCommand()
           #ifdef FTP_DEBUG
           Serial.println("File Name = "+ fn);
           #endif
-          fs = String(file.size());
+          fs = String(file.size());//?
           if(file.isDirectory()){
             data.println( "01-01-2000  00:00AM <DIR> " + fn);
           } else {
@@ -463,7 +461,7 @@ boolean FtpServer::processCommand()
   
   //
   //  MLSD - Listing for Machine Processing (see RFC 3659)
-  //
+  //如果目录被命名，列出目录的内容
   else if( ! strcmp( command, "MLSD" ))
   {
     if( ! dataConnect())
@@ -514,7 +512,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  NLST - Name List 
-  //
+  //返回指定目录的文件名列表
   else if( ! strcmp( command, "NLST" ))
   {
     if( ! dataConnect())
@@ -545,7 +543,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  NOOP
-  //
+  //无操作（哑包；通常用来保活）
   else if( ! strcmp( command, "NOOP" ))
   {
     // dataPort = 0;
@@ -553,7 +551,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  RETR - Retrieve
-  //
+  //	传输文件副本
   else if( ! strcmp( command, "RETR" ))
   {
     char path[ FTP_CWD_SIZE ];
@@ -583,7 +581,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  STOR - Store
-  //
+  //	接收数据并且在服务器站点保存为文件
   else if( ! strcmp( command, "STOR" ))
   {
     char path[ FTP_CWD_SIZE ];
@@ -613,7 +611,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  MKD - Make Directory
-  //
+  //	创建目录
   
   else if( ! strcmp( command, "MKD" ))
   {
@@ -637,7 +635,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  RMD - Remove a Directory 
-  //
+  //	删除目录
   else if( ! strcmp( command, "RMD" ))
   {
 	 char path[ FTP_CWD_SIZE ];
@@ -659,7 +657,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  RNFR - Rename From 
-  //
+  //	从...重命名
   else if( ! strcmp( command, "RNFR" ))
   {
     buf[ 0 ] = 0;
@@ -681,7 +679,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  RNTO - Rename To 
-  //
+  //	重命名到...
   else if( ! strcmp( command, "RNTO" ))
   {  
     char path[ FTP_CWD_SIZE ];
@@ -717,7 +715,7 @@ boolean FtpServer::processCommand()
 
   //
   //  FEAT - New Features
-  //
+  //获得服务器支持的特性列表
   else if( ! strcmp( command, "FEAT" ))
   {
     client.println( "211-Extensions suported:");
@@ -726,7 +724,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  MDTM - File Modification Time (see RFC 3659)
-  //
+  //返回指定文件的最后修改时间
   else if (!strcmp(command, "MDTM"))
   {
 	  client.println("550 Unable to retrieve time");
@@ -734,7 +732,7 @@ boolean FtpServer::processCommand()
 
   //
   //  SIZE - Size of the file
-  //
+  //	返回文件大小
   else if( ! strcmp( command, "SIZE" ))
   {
     char path[ FTP_CWD_SIZE ];
@@ -754,7 +752,7 @@ boolean FtpServer::processCommand()
   }
   //
   //  SITE - System command
-  //
+  //发送站点特殊命令到远端服务器
   else if( ! strcmp( command, "SITE" ))
   {
       client.println( "500 Unknow SITE command " +String(parameters) );
@@ -795,7 +793,7 @@ boolean FtpServer::dataConnect()
 
 }
 
-boolean FtpServer::doRetrieve()
+boolean FtpServer::doRetrieve()//检索数据
 {
 if (data.connected())
 {
@@ -885,8 +883,8 @@ int8_t FtpServer::readChar()
     if( c != '\r' )
       if( c != '\n' )
       {
-        if( iCL < FTP_CMD_SIZE )
-          cmdLine[ iCL ++ ] = c;
+        if( iCL < FTP_CMD_SIZE )//iCL指向命令行下一个传入字符的指针
+          cmdLine[ iCL ++ ] = c;//cmdLine存储来自客户端的字符
         else
           rc = -2; //  Line too long
       }
