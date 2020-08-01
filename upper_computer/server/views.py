@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse, StreamingHttpResponse, HttpResponse
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.parsers import *
@@ -67,15 +67,16 @@ class TestView(APIView):
         client = request.data.get("client")
         operation = request.data.get("operation")
         root = request.data.get("root")
-        response = {
-            "size": {
-                "width": width,
-                "height": height
-            },
-            "img": ""
-        }
+        # response = {
+        #     "size": {
+        #         "width": width,
+        #         "height": height
+        #     },
+        #     "img": ""
+        # }
 
-        text = self._fileOperation(client, operation)
+        text = ""
+        text += self._fileOperation(client, operation)
         text += self._generateRootStr(root)
         # print(text)
         img = Image.new('1', (width, height), 0)
@@ -84,10 +85,17 @@ class TestView(APIView):
         font = ImageFont.truetype(r"C:\Windows\Fonts\Consolas\consola.ttf", 16)
         # draw.multiline_text((0, 0), text_test, fill=1, font=font)
         draw.multiline_text((10, 10), text, fill=1, font=font)
+        # print(np.size(img))
         img.show()
-        response["img"] = self._numpyBool2Str(np.array(img))
-        print(len(response["img"]))
-        return JsonResponse(response)
+
+        response_str = self._numpyBool2Str(np.array(img)) + b'\xff'
+        print(len(response_str))
+        # response["img"] = response_str
+
+        response = HttpResponse(response_str, content_type="application/octet-stream")
+        response["width"] = width
+        response["height"] = height
+        return response
 
     def _fileOperation(self, client, operation):
         """
@@ -96,24 +104,38 @@ class TestView(APIView):
         :param operation: 文件操作信息
         :return: operation_str: 文件操作字符串信息
         """
-        now = datetime.now()
-        operation_str = str(now) + "    IP: " + client["ip"] + "    operation: "
-        if operation["type"] // 10 == 1:  # 上传
-            operation_str += "UPLOAD"
-        elif operation["type"] // 10 == 2:  # 删除
-            operation_str += "DELETE"
-        elif operation["type"] // 10 == 3:  # 重命名
-            operation_str += "RENAME"
-        elif operation["type"] // 10 == 4:  # 下载
-            operation_str += "DOWNLOAD"
+        operation_str = ""
+        if operation is not None:
+            if operation.get("original_path") is None \
+                    or operation.get("type") is None \
+                    or operation.get("modified_path") is None:
+                return operation_str
 
-        if operation["type"] % 10 == 1:  # 文件夹
-            operation_str += " folder"
-        elif operation["type"] % 10 == 2:  # 文件
-            operation_str += " file"
-        operation_str += '\n'
-        operation_str += "    Original Path: " + operation["original_path"] + '\n'
-        operation_str += "    Modified Path: " + operation["modified_path"] + '\n\n'
+            now = datetime.now()
+            operation_str += str(now)
+
+            if client is not None:
+                if client.get("ip") is None:
+                    return operation_str
+                operation_str += "    IP: " + client["ip"]
+
+            operation_str += "    operation: "
+            if operation["type"] // 10 == 1:  # 上传
+                operation_str += "UPLOAD"
+            elif operation["type"] // 10 == 2:  # 删除
+                operation_str += "DELETE"
+            elif operation["type"] // 10 == 3:  # 重命名
+                operation_str += "RENAME"
+            elif operation["type"] // 10 == 4:  # 下载
+                operation_str += "DOWNLOAD"
+
+            if operation["type"] % 10 == 1:  # 文件夹
+                operation_str += " folder"
+            elif operation["type"] % 10 == 2:  # 文件
+                operation_str += " file"
+            operation_str += '\n'
+            operation_str += "    Original Path: " + operation["original_path"] + '\n'
+            operation_str += "    Modified Path: " + operation["modified_path"] + '\n\n'
 
         return operation_str
 
@@ -174,15 +196,17 @@ class TestView(APIView):
         width = np.size(arr, 1)
         counter = 0
         temp = 0
-        string = ""
+        string = b""
         for line in arr:
             for item in line:
                 temp <<= 1
                 if item:
-                    temp += 1
+                    temp |= 1
                 counter += 1
                 if counter == 8:
-                    string += chr(temp)
+                    if temp == 255:
+                        temp = 254
+                    string += bytes([temp])
                     temp = 0
                     counter = 0
         # print(len(string))

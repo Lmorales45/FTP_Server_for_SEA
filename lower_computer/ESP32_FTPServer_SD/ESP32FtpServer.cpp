@@ -24,12 +24,14 @@
 
 #include <WiFi.h>
 //#include <ESP32WebServer.h>
-#include "SD_MMC.h"
+#include <SD_MMC.h>
 #include <FS.h>
 //#include "SPI.h"
 
 WiFiServer ftpServer(FTP_CTRL_PORT);
 WiFiServer dataServer(FTP_DATA_PORT_PASV);
+
+// fs::FS &convertor(fs::FS &fs) {return fs;}
 
 void FtpServer::begin(String uname, String pword)
 {
