@@ -72,7 +72,7 @@ void FtpServer::handleFTP()//这个函数的功能没搞懂
 
   if (ftpServer.hasClient()) {//hasclient(也是为了确保有效的TCP连接)检查是否有客户端访问ESP8266开发板所建立的网络服务器
 //  if (ftpServer.available()) {
-	  // client.stop();
+     client.stop();
 	  client = ftpServer.available();
     printf("new client\n");
   }
