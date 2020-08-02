@@ -7,7 +7,7 @@ void setup()
     Serial.println();
 
     StaticJsonDocument<200> doc;              //声明一个JsonDocument对象,
-    JsonObject = root = doc.as<JsonObject>(); //将该对象转换为一个对象节点
+    JsonObject root = doc.as<JsonObject>(); //将该对象转换为一个对象节点
 
     JsonObject operation_obj = root.createNestedObject("operation"); //添加一个对象节点
     operation_obj["original_path"] = "/sd/folder1";                  //操作前对象(路径)

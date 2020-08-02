@@ -1,8 +1,8 @@
-#include "ESP32FtpServer.h"
-#include "sea_esp32_qspi.h"
 #include <ArduinoJson.h>
 #include <HTTPClient.h>
+#include <SD_MMC.h>
 #include <WiFi.h>
+#include <sea_esp32_qspi.h>
 
 #define BASE_DEBUG
 #define DEPTH_DEBUG
@@ -63,6 +63,8 @@ void setup()
    upper_computer.setAuthorization("esp32", "test");  //用户校验信息
    // 设置需要收集的响应头
    upper_computer.collectHeaders(keys, 2);
+
+   SeaTrans.begin();  // QSPI初始化
 }
 
 void loop()
@@ -76,11 +78,11 @@ void loop()
       //判断请求是否成功
       if (httpCode == HTTP_CODE_OK) {
          //读取响应内容
-         handleHeaderResponse();                                       // 处理响应头数据
-         int        width    = upper_computer.header(key[0]).toInt();  // 获取响应头中画面宽度
-         int        height   = upper_computer.header(key[1]).toInt();  // 获取响应头中画面高度
-         int        size     = upper_computer.getSize();               // 获取响应头中响应体的字节数
-         WiFiClient response = upper_computer.getStream();             // 获取响应体中数据流
+         // upper_computer.handleHeaderResponse();                         // 处理响应头数据
+         int        width    = upper_computer.header(keys[0]).toInt();  // 获取响应头中画面宽度
+         int        height   = upper_computer.header(keys[1]).toInt();  // 获取响应头中画面高度
+         int        size     = upper_computer.getSize();                // 获取响应头中响应体的字节数
+         WiFiClient response = upper_computer.getStream();              // 获取响应体中数据流
 
          uint8_t data[32];  // 将要通过QSPI进行传输的数据
          // 空间划分方式 |16字节数据|4字节屏幕宽度|4字节屏幕高度|8字节地址|
@@ -88,8 +90,8 @@ void loop()
          int c       = 0;  // 储存一字节的数据
          int ptr     = 0;  // 指向data数据的指针
 
-         int2Uint8(width, data + 16; 4);
-         int2Uint8(height, data + 20; 4);
+         int2Uint8(width, data + 16, 4);
+         int2Uint8(height, data + 20, 4);
 
          unsigned long time_begin = millis();  // 进入循环的时间
          unsigned long time_now   = millis();  // 储存现在时间
@@ -104,11 +106,11 @@ void loop()
                   data[ptr++] = c;
                }
                if (ptr == 16) {  // 已经读取16个字节的数据
-                  int2Uint8(address, data + 24; 8);
+                  int2Uint8(address, data + 24, 8);
 #ifdef DEPTH_DEBUG
-                  Serial.println("address: %d\n", address);
+                  Serial.printf("address: %d\n", address);
 #endif
-                  SeaTrans.write(0x00, data, 32);
+                  SeaTrans.write(0, data, 32);
                   address += 128;
                   ptr = 0;
                }
@@ -158,7 +160,7 @@ void listDir(fs::FS &fs, JsonArray &dir, const char *dirname, uint8_t levels)
 
    JsonObject folders = dir.createNestedObject();  // 该对象存放所有次级目录
 
-   for (File file = root.openNextFile();, file; file = root.openNextFile()) {
+   for (File file = root.openNextFile(); file; file = root.openNextFile()) {
       if (file.isDirectory()) {
          Serial.print("  DIR : ");
          Serial.println(file.name());
@@ -180,7 +182,7 @@ void listDir(fs::FS &fs, JsonArray &dir, const char *dirname, uint8_t levels)
    }
 }
 
-bool int2Uint8(int x, uint8_t *p, int length = 4)
+bool int2Uint8(int x, uint8_t *p, int length)
 {
    const int mask = 0xff;
    if (length == 4 || length == 8) {

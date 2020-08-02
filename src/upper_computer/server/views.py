@@ -61,8 +61,10 @@ class TestView(APIView):
     _indent = ["    ", "|   ", "|-- "]
 
     def post(self, request, *args, **kwargs):
-        width = 900
-        height = 1440
+        width = 720  # 图片宽度
+        height = 1280  # 图片高度
+        font_size = 16  # 字号
+        origin = (10, 10)  # 原点
 
         client = request.data.get("client")
         operation = request.data.get("operation")
@@ -82,9 +84,9 @@ class TestView(APIView):
         img = Image.new('1', (width, height), 0)
         # img.show()
         draw = ImageDraw.Draw(img)
-        font = ImageFont.truetype(r"C:\Windows\Fonts\Consolas\consola.ttf", 16)
+        font = ImageFont.truetype(r"C:\Windows\Fonts\Consolas\consola.ttf", font_size)
         # draw.multiline_text((0, 0), text_test, fill=1, font=font)
-        draw.multiline_text((10, 10), text, fill=1, font=font)
+        draw.multiline_text(origin, text, fill=1, font=font)
         # print(np.size(img))
         img.show()
 
@@ -117,9 +119,9 @@ class TestView(APIView):
             if client is not None:
                 if client.get("ip") is None:
                     return operation_str
-                operation_str += "    IP: " + client["ip"]
+                operation_str += "\n    IP: " + client["ip"]
 
-            operation_str += "    operation: "
+            operation_str += "\n    operation: "
             if operation["type"] // 10 == 1:  # 上传
                 operation_str += "UPLOAD"
             elif operation["type"] // 10 == 2:  # 删除
@@ -133,9 +135,8 @@ class TestView(APIView):
                 operation_str += " folder"
             elif operation["type"] % 10 == 2:  # 文件
                 operation_str += " file"
-            operation_str += '\n'
-            operation_str += "    Original Path: " + operation["original_path"] + '\n'
-            operation_str += "    Modified Path: " + operation["modified_path"] + '\n\n'
+            operation_str += "\n    Original Path: " + operation["original_path"]
+            operation_str += "\n    Modified Path: " + operation["modified_path"] + '\n\n'
 
         return operation_str
 
