@@ -62,6 +62,15 @@ module EFIT(
     wire [7:0]  o_data;
     wire [7:0]  i_data;
     wire o_valid;
+//    wire enb;//RAM B 端口使能
+//    assign enb=1;
+    always @(posedge clk,negedge rst_n)
+    begin
+        if(!rst_n)
+        begin
+            
+        end
+    end
     //QSPI交互模块
     qspi_slave u_qspi_slave(
         .I_qspi_clk  (I_qspi_clk)  , 
@@ -79,38 +88,24 @@ module EFIT(
     wire [31:0] addrb;
     wire [7:0] dinb;
     wire [7:0] doutb;
-    wire web;
     //RAM
     blk_mem_gen_0 u_blk_mem_gen_0 (
       .clka(I_qspi_clk),    // input wire clka
-      .wea(o_valid),      // input wire [0 : 0] wea
+      .wea(o_valid),      // input wire [0 : 0] wea RAM写使能端
       .addra(addr),  // input wire [14 : 0] addra
       .dina(o_data),    // input wire [7 : 0] dina
       .clkb(clk),    // input wire clkb
-      .enb(RGB_VDE),      // input wire enb
       .addrb(addrb),  // input wire [14 : 0] addrb
       .doutb(doutb)  // output wire [7 : 0] doutb 输出给数据处理模块的数据
 );
-//    blk_mem_gen_0 u_blk_mem_gen_0(
-//        .addra(addr),
-//        .clka(I_qspi_clk),
-//        .dina(o_data),
-//        .douta(i_data),
-//        .wea(o_valid),
-//        .addrb(addrb),
-//        .clkb(clk),
-//        .dinb(dinb),
-//        .doutb(doutb),//输出给数据处理模块的数据
-//        .web(web)
-//    );
+
     //数据处理模块，提取图片像素信息并返回给HDMI Driver
     get_data_from_esp32 get_data_from_esp32_0(
          .clk(clk),
          .rst_n(rst_n),
          .addr(addrb),  //output addr
          .data_in(doutb),//读取RAM数据(doutb)
-         .data_out(dinb),//发送图片数据给HDMI Driver
-         .wen(web)//RAM写使能端
+         .data_out(dinb)//发送图片数据给HDMI Driver
     );
     
      //RGBToDvi instantiation
