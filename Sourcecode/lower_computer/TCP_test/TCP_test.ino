@@ -88,10 +88,10 @@ void loop()
          // 空间划分方式 |16字节数据|4字节屏幕宽度|4字节屏幕高度|8字节地址|
          int address = 0;  // 将要传输数据的第一位位于bitstream的第几位
          int c       = 0;  // 储存一字节的数据
-         int ptr     = 0;  // 指向data数据的指针
+         int ptr     = 8;  // 指向data数据的指针, 0~3字节是宽度, 4~7字节是高度
 
-         int2Uint8(width, data + 16, 4);
-         int2Uint8(height, data + 20, 4);
+         int2Uint8(width, data, 4);       // 写入宽度
+         int2Uint8(height, data + 4, 4);  // 写入高度
 
          unsigned long time_begin = millis();  // 进入循环的时间
          unsigned long time_now   = millis();  // 储存现在时间
@@ -105,18 +105,18 @@ void loop()
                if (c < 0xff) {       // 读到的不是终止符
                   data[ptr++] = c;
                }
-               if (ptr == 16) {  // 已经读取16个字节的数据
+               if (ptr == 32) {  // 已经读取32个字节的数据
                   int2Uint8(address, data + 24, 8);
 #ifdef DEPTH_DEBUG
                   Serial.printf("address: %d\n", address);
 #endif
-                  SeaTrans.write(0, data, 32);
-                  address += 128;
+                  SeaTrans.write(address, data, 32);
+                  address += 32;
                   ptr = 0;
                }
             }
             if (c == 0xff ||                          // 收到结束符
-                address >= size ||                    // 数据量异常
+                (address - 2) >= size ||              // 数据量异常
                 time_now - time_begin > HTTP_TIMEOUT  // 等待时间过长
             ) {
                break;  // 跳出循环
