@@ -89,6 +89,7 @@ class TestView(APIView):
         draw.multiline_text(origin, text, fill=1, font=font)
         # print(np.size(img))
         img.show()
+        img.save("temp.jpg")
 
         response_str = self._numpyBool2Str(np.array(img)) + b'\xff'
         print(len(response_str))

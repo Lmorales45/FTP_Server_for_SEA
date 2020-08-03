@@ -138,3 +138,7 @@
 
 
 ## 作品照片
+
+### 屏幕显示
+
+![屏幕显示](Sourcecode/upper_computer/temp.jpg)
