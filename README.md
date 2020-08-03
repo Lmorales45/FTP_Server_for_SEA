@@ -110,6 +110,7 @@
 | &nbsp;&emsp; \|-- 系统框图.vsdx                                         | Vison设计文件         |
 | \|-- images                                                             | 项目图片              |
 | &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图              |
+| &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示              |
 | &nbsp;&emsp; \|-- 技术路线.png                                          | 技术路线              |
 | \|-- ExecutableFiles                                                    | 项目可执行文件        |
 | \|-- Sourcecode                                                         | 项目源码              |
@@ -132,6 +133,7 @@
 | &nbsp;&emsp; &nbsp;&emsp; \|-- manage.py                                | 项目控制文件          |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- requirements.txt                         | 环境依赖描述文件      |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- response.bit                             | 响应体示例文件        |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- temp.jpg                                 | 图片渲染结果          |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- .idea                                    | PyCharm工程配置       |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- server                                   | Django 图片渲染App    |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- upper_computer                           | Django 项目管理App    |
@@ -141,4 +143,4 @@
 
 ### 屏幕显示
 
-![屏幕显示](Sourcecode/upper_computer/temp.jpg)
+![屏幕显示](images/屏幕显示.jpg)

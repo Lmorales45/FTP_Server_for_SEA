@@ -132,10 +132,10 @@ class TestView(APIView):
             elif operation["type"] // 10 == 4:  # 下载
                 operation_str += "DOWNLOAD"
 
-            if operation["type"] % 10 == 1:  # 文件夹
-                operation_str += " folder"
+            if operation["type"] % 10 == 1:  # 目录
+                operation_str += " DIR"
             elif operation["type"] % 10 == 2:  # 文件
-                operation_str += " file"
+                operation_str += " FILE"
             operation_str += "\n    Original Path: " + operation["original_path"]
             operation_str += "\n    Modified Path: " + operation["modified_path"] + '\n\n'
 
