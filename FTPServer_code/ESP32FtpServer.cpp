@@ -1,0 +1,1056 @@
+/*
+ * FTP Serveur for ESP8266
+ * based on FTP Serveur for Arduino Due and Ethernet shield (W5100) or WIZ820io (W5200)
+ * based on Jean-Michel Gallego's work
+ * modified to work with esp8266 SPIFFS by David Paiva david@nailbuster.com
+ * 
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+//  2017: modified by @robo8080
+// 2019: modified by @fa1ke5
+
+#include "ESP32FtpServer.h"
+
+#include <WiFi.h>
+//#include <ESP32WebServer.h>
+#include <FS.h>
+#include "SD_MMC.h"
+//#include "SPI.h"
+
+
+
+WiFiServer ftpServer( FTP_CTRL_PORT );//命令端口
+WiFiServer dataServer( FTP_DATA_PORT_PASV );//数据端口
+
+void FtpServer::begin(String uname, String pword)
+{
+  // Tells the ftp server to begin listening for incoming connection接收ftp服务器请求（esp32）
+	_FTP_USER=uname;
+	_FTP_PASS = pword;
+  
+	ftpServer.begin();//没有任何结果？WiFiServer::begin(uint16_t port)
+	delay(10);
+	dataServer.begin();	
+	delay(10);
+	millisTimeOut = (uint32_t)FTP_TIME_OUT * 60 * 1000;//connect time less than 5minute
+	millisDelay = 0;
+	cmdStatus = 0;
+    iniVariables();//调用begin后直接初始化
+}
+
+void FtpServer::iniVariables()//初始化变量
+{
+  // Default for data port
+  dataPort = FTP_DATA_PORT_PASV;
+  
+  // Default Data connection is Active
+  dataPassiveConn = true;
+  
+  // Set the root directory
+  strcpy( cwdName, "/" );//cwdName是当前目录名，这行创建了/路径
+
+  rnfrCmd = false;//?
+  transferStatus = 0;//初始化只是定义了端口和ftp模式，并未建立传输链路
+  
+}
+
+void FtpServer::handleFTP()//这个函数的功能没搞懂
+{
+  if((int32_t) ( millisDelay - millis() ) > 0 )
+    return;//什么意思？
+
+  if (ftpServer.hasClient()) {//hasclient(也是为了确保有效的TCP连接)检查是否有客户端访问ESP8266开发板所建立的网络服务器
+//  if (ftpServer.available()) {
+     client.stop();
+	  client = ftpServer.available();
+    printf("new client\n");
+  }
+  
+  if( cmdStatus == 0 )
+  {//cmdStatus=0表示出现某些错误，这将导致重新登陆或者传输中断
+    if( client.connected())//如果有服务器连接则断开
+      disconnectClient();
+    cmdStatus = 1;
+  }
+  else if( cmdStatus == 1 )         // Ftp server waiting for connection
+  {
+    abortTransfer();//什么意思？推测是关闭数据传输？
+    iniVariables();
+    #ifdef FTP_DEBUG
+	Serial.println("Ftp server waiting for connection on port "+ String(FTP_CTRL_PORT));
+    #endif
+    cmdStatus = 2;
+  }
+  else if( cmdStatus == 2 )         // Ftp server idle
+  {
+   		
+    if( client.connected() )                // A client connected
+    {
+      clientConnected();      
+      millisEndConnection = millis() + 10 * 1000 ; // wait client id during 10 s.
+      cmdStatus = 3;
+    }
+  }
+  else if( readChar() > 0 )         // got response
+  {
+    if( cmdStatus == 3 )            // Ftp server waiting for user identity
+      if( userIdentity() )//判断用户账号是否输入正确
+        cmdStatus = 4;
+      else
+        cmdStatus = 0;
+    else if( cmdStatus == 4 )       // Ftp server waiting for user registration
+      if( userPassword() )
+      {
+        cmdStatus = 5;
+        millisEndConnection = millis() + millisTimeOut;
+      }
+      else
+        cmdStatus = 0;
+    else if( cmdStatus == 5 )       // Ftp server waiting for user command
+      if( ! processCommand())
+        cmdStatus = 0;
+      else
+        millisEndConnection = millis() + millisTimeOut;
+  }
+  else if (!client.connected() || !client)
+  {
+	  cmdStatus = 1;
+      #ifdef FTP_DEBUG
+	    Serial.println("client disconnected");
+	  #endif
+  }
+
+  if( transferStatus == 1 )         // Retrieve data
+  {
+    if( ! doRetrieve())
+      transferStatus = 0;
+  }
+  else if( transferStatus == 2 )    // Store data
+  {
+    if( ! doStore())
+      transferStatus = 0;
+  }
+  else if( cmdStatus > 2 && ! ((int32_t) ( millisEndConnection - millis() ) > 0 ))
+  {
+	  client.println("530 Timeout");
+    millisDelay = millis() + 200;    // delay of 200 ms
+    cmdStatus = 0;
+  }
+}
+
+void FtpServer::clientConnected()
+{
+  #ifdef FTP_DEBUG
+	Serial.println("Client connected!");
+  #endif
+  client.println( "220--- Welcome to FTP for ESP32 ---");
+  client.println( "220---   By David Paiva   ---");
+  client.println( "220 --   Version "+ String(FTP_SERVER_VERSION) +"   --");
+  iCL = 0;
+}
+
+void FtpServer::disconnectClient()
+{
+  #ifdef FTP_DEBUG
+	Serial.println(" Disconnecting client");
+  #endif
+  abortTransfer();
+  client.println("221 Goodbye");
+  client.stop();
+}
+
+boolean FtpServer::userIdentity()
+{	//验证账户
+  if( strcmp( command, "USER" ))
+    client.println( "500 Syntax error");
+  if( strcmp( parameters, _FTP_USER.c_str() ))
+    client.println( "530 user not found");
+  else
+  {
+    client.println( "331 OK. Password required");
+    strcpy( cwdName, "/" );
+    return true;
+  }
+  millisDelay = millis() + 100;  // delay of 100 ms
+  return false;
+}
+
+boolean FtpServer::userPassword()
+{//验证密码
+  if( strcmp( command, "PASS" ))
+    client.println( "500 Syntax error");
+  else if( strcmp( parameters, _FTP_PASS.c_str() ))//非零即为true，所以输入密码不正确就成立
+    client.println( "530 ");
+  else
+  {
+    #ifdef FTP_DEBUG
+      Serial.println( "OK. Waiting for commands.");
+    #endif
+    client.println( "230 OK.");
+    return true;
+  }
+  millisDelay = millis() + 100;  // delay of 100 ms
+  return false;
+}
+
+boolean FtpServer::processCommand()
+{
+  //////////////////////////////////////-
+  //                                   //
+  //      ACCESS CONTROL COMMANDS      //
+  //                                   //
+  ///////////////////////////////////////
+
+  //
+  //  CDUP - Change to Parent Directory 
+  //  CDUP将远程计算机工作目录改为其上一级目录，CWD改变工作目录
+  if( ! strcmp( command, "CDUP" ) || ( ! strcmp( command, "CWD" ) && ! strcmp( parameters, ".." )))//..是什么意思？
+  {//ok作为一个中间变量为布尔类型
+	 bool ok = false;//ok = false表示文件名符合规则不需要修改（不确定）
+	 if( strlen( cwdName ) > 1 )            // do nothing if cwdName is root,  根目录为“/”长度为1
+    {
+      // if cwdName ends with '/', remove it (must not append)
+      if( cwdName[ strlen( cwdName ) - 1 ] == '/' )
+        cwdName[ strlen( cwdName ) - 1 ] = 0;
+      // search last '/'
+      char * pSep = strrchr( cwdName, '/' );//当前文件名中搜索最后一次出现字符 ‘/’位置
+      ok = pSep > cwdName;
+      // if found, ends the string on its position
+      if( ok )
+      {
+        * pSep = 0;
+        ok = SD_MMC.exists( cwdName );
+      }
+    }
+    // if an error appends, move to root
+    if( ! ok )
+      strcpy( cwdName, "/" );
+   // client << F("250 Ok. Current directory is ") << cwdName << eol;
+	 
+	 client.println("250 Ok. Current directory is " + String(cwdName));
+  }
+  //
+  //  CWD - Change Working Directory
+  //
+  else if( ! strcmp( command, "CWD" ))
+  { 
+    
+    
+  char path[ FTP_CWD_SIZE ];
+    if( haveParameter() && makeExistsPath( path ))
+    {
+      strcpy( cwdName, path );
+       client.println( "250 Ok. Current directory is " + String(cwdName) );
+    }  
+    
+    
+    //Serial.print("********************************************cwdName: ");Serial.println(String(cwdName));
+    /*
+    char path[ FTP_CWD_SIZE ];
+    if( strcmp( parameters, "." ) == 0 ){  // 'CWD .' is the same as PWD command
+    
+      client.println( "257 \"" + String(cwdName) + "\" is your current directory");
+      */
+   //   Serial.print("********************************************cwdName: ");Serial.println(String(cwdName));
+   /*
+    }
+    else 
+      {   
+        if( haveParameter() && makeExistsPath( path )){  
+         strcpy( cwdName, path );
+        Serial.print("************************parameters: ");Serial.println(parameters);
+        
+        client.println( "250 Ok. Current directory is " + String(cwdName) );
+         Serial.print("********************************************cwdName: ");Serial.println(String(cwdName));
+        }
+      }
+    */
+  }
+  //
+  //  PWD - Print Directory
+  //
+  else if( ! strcmp( command, "PWD" ))//PWD:打印工作目录，返回主机的当前目录
+    client.println( "257 \"" + String(cwdName) + "\" is your current directory");
+  //
+  //  QUIT
+  //
+  else if( ! strcmp( command, "QUIT" ))
+  {
+    disconnectClient();
+    return false;
+  }
+
+  ///////////////////////////////////////
+  //                                   //
+  //    TRANSFER PARAMETER COMMANDS    //
+  //                                   //
+  ///////////////////////////////////////
+
+  //
+  //  MODE - Transfer Mode 
+  //设定传输模式（流、块或压缩）
+  else if( ! strcmp( command, "MODE" ))
+  {
+    if( ! strcmp( parameters, "S" ))
+      client.println( "200 S Ok");
+    // else if( ! strcmp( parameters, "B" ))
+    //  client.println( "200 B Ok\r\n";
+    else
+      client.println( "504 Only S(tream) is suported");
+  }
+  //
+  //  PASV - Passive Connection management
+  //	进入被动模式
+  else if( ! strcmp( command, "PASV" ))
+  {
+    if (data.connected()) data.stop();
+    //dataServer.begin();
+     //dataIp = Ethernet.localIP();    
+	dataIp = WiFi.localIP();	
+	dataPort = FTP_DATA_PORT_PASV;
+    //data.connect( dataIp, dataPort );
+    //data = dataServer.available();
+    #ifdef FTP_DEBUG
+	Serial.println("Connection management set to passive");
+      Serial.println( "Data port set to " + String(dataPort));
+    #endif
+   client.println( "227 Entering Passive Mode ("+ String(dataIp[0]) + "," + String(dataIp[1])+","+ String(dataIp[2])+","+ String(dataIp[3])+","+String( dataPort >> 8 ) +","+String ( dataPort & 255 )+").");
+   dataPassiveConn = true;
+  }
+  //
+  //  PORT - Data Port
+  //指定服务器要连接的地址和端口
+  else if( ! strcmp( command, "PORT" ))
+  {
+	if (data) data.stop();
+    // get IP of data client
+    dataIp[ 0 ] = atoi( parameters );
+    char * p = strchr( parameters, ',' );
+    for( uint8_t i = 1; i < 4; i ++ )
+    {
+      dataIp[ i ] = atoi( ++ p );
+      p = strchr( p, ',' );
+    }
+    // get port of data client
+    dataPort = 256 * atoi( ++ p );
+    p = strchr( p, ',' );
+    dataPort += atoi( ++ p );
+    if( p == NULL )
+      client.println( "501 Can't interpret parameters");
+    else
+    {
+      
+		client.println("200 PORT command successful");
+      dataPassiveConn = false;
+    }
+  }
+  //
+  //  STRU - File Structure
+  //设定文件传输结构
+  else if( ! strcmp( command, "STRU" ))
+  {
+    if( ! strcmp( parameters, "F" ))
+      client.println( "200 F Ok");
+    // else if( ! strcmp( parameters, "R" ))
+    //  client.println( "200 B Ok\r\n";
+    else
+      client.println( "504 Only F(ile) is suported");
+  }
+  //
+  //  TYPE - Data Type
+  //设定传输模式（ASCII/二进制).
+  else if( ! strcmp( command, "TYPE" ))
+  {
+    if( ! strcmp( parameters, "A" ))
+      client.println( "200 TYPE is now ASII");
+    else if( ! strcmp( parameters, "I" ))
+      client.println( "200 TYPE is now 8-bit binary");
+    else
+      client.println( "504 Unknow TYPE");
+  }
+
+  ///////////////////////////////////////
+  //                                   //
+  //        FTP SERVICE COMMANDS       //
+  //                                   //
+  ///////////////////////////////////////
+
+  //
+  //  ABOR - Abort此命令使服务器终止前一个FTP服务命令以及任何相关数据传输。
+  //
+  else if( ! strcmp( command, "ABOR" ))
+  {
+    abortTransfer();
+    client.println( "226 Data connection closed");
+  }
+  //
+  //  DELE - Delete a File 
+  //
+  else if( ! strcmp( command, "DELE" ))
+  {
+    char path[ FTP_CWD_SIZE ];
+    if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( path ))
+    {
+      if( ! SD_MMC.exists( path ))
+        client.println( "550 File " + String(parameters) + " not found");
+      else
+      {
+        if( SD_MMC.remove( path ))
+          client.println( "250 Deleted " + String(parameters) );
+        else
+          client.println( "450 Can't delete " + String(parameters));
+      }
+    }
+  }
+  //
+  //  LIST - List 	
+  //如果指定了文件或目录，返回其信息；否则返回当前工作目录的信息
+  else if( ! strcmp( command, "LIST" ))
+  {
+     if(dataConnect()){
+     client.println( "150 Accepted data connection");
+      uint16_t nm = 0;
+      File dir=SD_MMC.open(cwdName);
+     if((!dir)||(!dir.isDirectory()))
+        client.println( "550 Can't open directory " + String(cwdName) );
+      else
+      {
+        File file = dir.openNextFile();
+        while( file)
+        {
+          String fn, fs;
+          fn = file.name();
+          int i = fn.lastIndexOf("/")+1;
+          fn.remove(0, i);
+          #ifdef FTP_DEBUG
+          Serial.println("File Name = "+ fn);
+          #endif
+          fs = String(file.size());//?
+          if(file.isDirectory()){
+            data.println( "01-01-2000  00:00AM <DIR> " + fn);
+          } else {
+            data.println( "01-01-2000  00:00AM " + fs + " " + fn);
+//          data.println( " " + fn );
+          }
+          nm ++;
+          file = dir.openNextFile();
+        }
+        client.println( "226 " + String(nm) + " matches total");
+        data.stop();
+      }
+      
+      }
+      else{
+        client.println( "425 No data connection");
+        data.stop();
+        }    
+  }
+  
+  //
+  //  MLSD - Listing for Machine Processing (see RFC 3659)
+  //如果目录被命名，列出目录的内容
+  else if( ! strcmp( command, "MLSD" ))
+  {
+    if( ! dataConnect())
+      client.println( "425 No data connection MLSD");
+    else
+    {
+	  client.println( "150 Accepted data connection");
+      uint16_t nm = 0;
+//      Dir dir= SD.openDir(cwdName);
+      File dir= SD_MMC.open(cwdName);
+      char dtStr[ 15 ];
+    //  if(!SD.exists(cwdName))
+     if((!dir)||(!dir.isDirectory()))
+        client.println( "550 Can't open directory " +String(cwdName) );
+//        client.println( "550 Can't open directory " +String(parameters) );
+      else
+      {
+//        while( dir.next())
+        File file = dir.openNextFile();
+//        while( dir.openNextFile())
+        while( file)
+    		{
+        
+    			String fn,fs;
+          fn = file.name();
+          int pos = fn.lastIndexOf("/"); //ищем начало файла по последнему "/"
+          fn.remove(0, pos+1); //Удаляем все до имени файла включительно
+          fs = String(file.size());
+          if(file.isDirectory()){
+	  
+	      data.println(fn);
+//            data.println( "Type=dir;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
+//            data.println( "Type=dir;modify=20000101000000; " + fn);
+          } else {
+	      data.println( fs + " " + fn);
+            //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101160656;" +" " + fn);
+            //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
+	      
+          }
+          nm ++;
+          file = dir.openNextFile();
+        }
+        client.println( "226-options: -a -l");
+        client.println( "226 " + String(nm) + " matches total");
+      }
+      data.stop();
+    }
+  }
+  //
+  //  NLST - Name List 
+  //返回指定目录的文件名列表
+  else if( ! strcmp( command, "NLST" ))
+  {
+    if( ! dataConnect())
+      client.println( "425 No data connection");
+    else
+    {
+      client.println( "150 Accepted data connection");
+      uint16_t nm = 0;
+//      Dir dir=SD.openDir(cwdName);
+      File dir= SD_MMC.open(cwdName);
+      if( !SD_MMC.exists( cwdName ))
+        client.println( "550 Can't open directory " + String(parameters));
+      else
+      {
+          File file = dir.openNextFile();
+//        while( dir.next())
+        while( file)
+        {
+//          data.println( dir.fileName());
+          data.println( file.name());
+          nm ++;
+          file = dir.openNextFile();
+        }
+        client.println( "226 " + String(nm) + " matches total");
+      }
+      data.stop();
+    }
+  }
+  //
+  //  NOOP
+  //无操作（哑包；通常用来保活）
+  else if( ! strcmp( command, "NOOP" ))
+  {
+    // dataPort = 0;
+    client.println( "200 Zzz...");
+  }
+  //
+  //  RETR - Retrieve
+  //	传输文件副本
+  else if( ! strcmp( command, "RETR" ))
+  {
+    char path[ FTP_CWD_SIZE ];
+    if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( path ))
+	{
+		file = SD_MMC.open(path, "r");
+      if( !file)
+        client.println( "550 File " +String(parameters)+ " not found");
+      else if( !file )
+        client.println( "450 Can't open " +String(parameters));
+      else if( ! dataConnect())
+        client.println( "425 No data connection");
+      else
+      {
+        #ifdef FTP_DEBUG
+		  Serial.println("Sending " + String(parameters));
+        #endif
+        client.println( "150-Connected to port "+ String(dataPort));
+        client.println( "150 " + String(file.size()) + " bytes to download");
+        millisBeginTrans = millis();
+        bytesTransfered = 0;
+        transferStatus = 1;
+      }
+    }
+  }
+  //
+  //  STOR - Store
+  //	接收数据并且在服务器站点保存为文件
+  else if( ! strcmp( command, "STOR" ))
+  {
+    char path[ FTP_CWD_SIZE ];
+    if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( path ))
+    {
+		file = SD_MMC.open(path, "w");
+      if( !file)
+        client.println( "451 Can't open/create " +String(parameters) );
+      else if( ! dataConnect())
+      {
+        client.println( "425 No data connection");
+        file.close();
+      }
+      else
+      {
+        #ifdef FTP_DEBUG
+          Serial.println( "Receiving " +String(parameters));
+        #endif
+        client.println( "150 Connected to port " + String(dataPort));
+        millisBeginTrans = millis();
+        bytesTransfered = 0;
+        transferStatus = 2;
+      }
+    }
+  }
+  //
+  //  MKD - Make Directory
+  //	创建目录
+  
+  else if( ! strcmp( command, "MKD" ))
+  {
+     char path[ FTP_CWD_SIZE ];
+     if( haveParameter() && makePath( path )){
+      if (SD_MMC.exists( path )){
+        client.println( "521 Can't create \"" + String(parameters) + ", Directory exists");
+        }
+        else
+        {
+          if( SD_MMC.mkdir( path )){
+            client.println( "257 \"" + String(parameters) + "\" created");
+            }
+            else{
+              client.println( "550 Can't create \"" + String(parameters));
+              }
+          }
+      
+      }
+	 
+  }
+  //
+  //  RMD - Remove a Directory 
+  //	删除目录
+  else if( ! strcmp( command, "RMD" ))
+  {
+	 char path[ FTP_CWD_SIZE ];
+     if( haveParameter() && makePath( path )){
+      if( SD_MMC.rmdir( path )){
+        #ifdef FTP_DEBUG
+        Serial.println( " Deleting " +String(parameters));
+         
+        #endif
+        client.println( "250 \"" + String(parameters) + "\" deleted");
+        
+        }
+        else
+        {
+        client.println( "550 Can't remove \"" + String(parameters) + "\". Directory not empty?");  
+          }
+      } 
+	
+  }
+  //
+  //  RNFR - Rename From 
+  //	从...重命名
+  else if( ! strcmp( command, "RNFR" ))
+  {
+    buf[ 0 ] = 0;
+    if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( buf ))
+    {
+      if( ! SD_MMC.exists( buf ))
+        client.println( "550 File " +String(parameters)+ " not found");
+      else
+      {
+        #ifdef FTP_DEBUG
+		  Serial.println("Renaming " + String(buf));
+        #endif
+        client.println( "350 RNFR accepted - file exists, ready for destination");     
+        rnfrCmd = true;
+      }
+    }
+  }
+  //
+  //  RNTO - Rename To 
+  //	重命名到...
+  else if( ! strcmp( command, "RNTO" ))
+  {  
+    char path[ FTP_CWD_SIZE ];
+    char dir[ FTP_FIL_SIZE ];
+    if( strlen( buf ) == 0 || ! rnfrCmd )
+      client.println( "503 Need RNFR before RNTO");
+    else if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( path ))
+    {
+      if( SD_MMC.exists( path ))
+        client.println( "553 " +String(parameters)+ " already exists");
+      else
+      {          
+            #ifdef FTP_DEBUG
+		  Serial.println("Renaming " + String(buf) + " to " + String(path));
+            #endif
+            if( SD_MMC.rename( buf, path ))
+              client.println( "250 File successfully renamed or moved");
+            else
+				client.println( "451 Rename/move failure");
+                                 
+      }
+    }
+    rnfrCmd = false;
+  }
+
+  ///////////////////////////////////////
+  //                                   //
+  //   EXTENSIONS COMMANDS (RFC 3659)  //
+  //                                   //
+  ///////////////////////////////////////
+
+  //
+  //  FEAT - New Features
+  //获得服务器支持的特性列表
+  else if( ! strcmp( command, "FEAT" ))
+  {
+    client.println( "211-Extensions suported:");
+    client.println( " MLSD");
+    client.println( "211 End.");
+  }
+  //
+  //  MDTM - File Modification Time (see RFC 3659)
+  //返回指定文件的最后修改时间
+  else if (!strcmp(command, "MDTM"))
+  {
+	  client.println("550 Unable to retrieve time");
+  }
+
+  //
+  //  SIZE - Size of the file
+  //	返回文件大小
+  else if( ! strcmp( command, "SIZE" ))
+  {
+    char path[ FTP_CWD_SIZE ];
+    if( strlen( parameters ) == 0 )
+      client.println( "501 No file name");
+    else if( makePath( path ))
+	{
+		file = SD_MMC.open(path, "r");
+      if(!file)
+         client.println( "450 Can't open " +String(parameters) );
+      else
+      {
+        client.println( "213 " + String(file.size()));
+        file.close();
+      }
+    }
+  }
+  //
+  //  SITE - System command
+  //发送站点特殊命令到远端服务器
+  else if( ! strcmp( command, "SITE" ))
+  {
+      client.println( "500 Unknow SITE command " +String(parameters) );
+  }
+  //
+  //  Unrecognized commands ...
+  //
+  else
+    client.println( "500 Unknow command");
+  
+  return true;
+}
+
+boolean FtpServer::dataConnect()
+{
+  unsigned long startTime = millis();
+  //wait 5 seconds for a data connection
+  if (!data.connected())
+  {
+    while (!dataServer.hasClient() && millis() - startTime < 10000)
+//    while (!dataServer.available() && millis() - startTime < 10000)
+	  {
+		  //delay(100);
+		  yield();
+	  }
+    if (dataServer.hasClient()) {
+//    if (dataServer.available()) {
+		  data.stop();
+		  data = dataServer.available();
+			#ifdef FTP_DEBUG
+		      Serial.println("ftpdataserver client....");
+			#endif
+		
+	  }
+  }
+
+  return data.connected();
+
+}
+
+boolean FtpServer::doRetrieve()//检索数据
+{
+if (data.connected())
+{
+  int16_t nb = file.readBytes(buf, FTP_BUF_SIZE);
+  if (nb > 0)
+    {
+    data.write((uint8_t*)buf, nb);
+    bytesTransfered += nb;
+    return true;
+  }
+}
+closeTransfer();
+return false;
+}
+
+
+boolean FtpServer::doStore()
+{
+  if( data.connected() )
+  {
+    int16_t nb = data.readBytes((uint8_t*) buf, FTP_BUF_SIZE );
+    if( nb > 0 )
+    {
+      // Serial.println( millis() << " " << nb << endl;
+      file.write((uint8_t*) buf, nb );
+      bytesTransfered += nb;
+    }
+    return true;
+  }
+  closeTransfer();
+  return false;
+}
+
+void FtpServer::closeTransfer()
+{
+  uint32_t deltaT = (int32_t) ( millis() - millisBeginTrans );
+  if( deltaT > 0 && bytesTransfered > 0 )
+  {
+    client.println( "226-File successfully transferred");
+    client.println( "226 " + String(deltaT) + " ms, "+ String(bytesTransfered / deltaT) + " kbytes/s");
+  }
+  else
+    client.println( "226 File successfully transferred");
+  
+  file.close();
+  data.stop();
+}
+
+void FtpServer::abortTransfer()
+{
+  if( transferStatus > 0 )
+  {
+    file.close();
+    data.stop(); 
+    client.println( "426 Transfer aborted"  );
+    #ifdef FTP_DEBUG
+      Serial.println( "Transfer aborted!") ;
+    #endif
+  }
+  transferStatus = 0;
+}
+
+// Read a char from client connected to ftp server
+//
+//  update cmdLine and command buffers, iCL and parameters pointers
+//
+//  return:
+//    -2 if buffer cmdLine is full
+//    -1 if line not completed
+//     0 if empty line received
+//    length of cmdLine (positive) if no empty line received 
+
+int8_t FtpServer::readChar()
+{
+  int8_t rc = -1;
+
+  if( client.available())
+  {
+    char c = client.read();
+	 // char c;
+	 // client.readBytes((uint8_t*) c, 1);
+    #ifdef FTP_DEBUG
+      Serial.print( c);
+    #endif
+    if( c == '\\' )
+      c = '/';
+    if( c != '\r' )
+      if( c != '\n' )
+      {
+        if( iCL < FTP_CMD_SIZE )//iCL指向命令行下一个传入字符的指针
+          cmdLine[ iCL ++ ] = c;//cmdLine存储来自客户端的字符
+        else
+          rc = -2; //  Line too long
+      }
+      else
+      {
+        cmdLine[ iCL ] = 0;
+        command[ 0 ] = 0;
+        parameters = NULL;
+        // empty line?
+        if( iCL == 0 )
+          rc = 0;
+        else
+        {
+          rc = iCL;
+          // search for space between command and parameters
+          parameters = strchr( cmdLine, ' ' );
+          if( parameters != NULL )
+          {
+            if( parameters - cmdLine > 4 )
+              rc = -2; // Syntax error
+            else
+            {
+              strncpy( command, cmdLine, parameters - cmdLine );
+              command[ parameters - cmdLine ] = 0;
+              
+              while( * ( ++ parameters ) == ' ' )
+                ;
+            }
+          }
+          else if( strlen( cmdLine ) > 4 )
+            rc = -2; // Syntax error.
+          else
+            strcpy( command, cmdLine );
+          iCL = 0;
+        }
+      }
+    if( rc > 0 )
+      for( uint8_t i = 0 ; i < strlen( command ); i ++ )
+        command[ i ] = toupper( command[ i ] );
+    if( rc == -2 )
+    {
+      iCL = 0;
+      client.println( "500 Syntax error");
+    }
+  }
+  return rc;
+}
+
+// Make complete path/name from cwdName and parameters
+//
+// 3 possible cases: parameters can be absolute path, relative path or only the name
+//
+// parameters:
+//   fullName : where to store the path/name
+//
+// return:
+//    true, if done
+
+boolean FtpServer::makePath( char * fullName )
+{
+  return makePath( fullName, parameters );
+}
+
+boolean FtpServer::makePath( char * fullName, char * param )
+{
+  if( param == NULL )
+    param = parameters;
+    
+  // Root or empty?
+  if( strcmp( param, "/" ) == 0 || strlen( param ) == 0 )
+  {
+    strcpy( fullName, "/" );
+    return true;
+  }
+  // If relative path, concatenate with current dir
+  if( param[0] != '/' ) 
+  {
+    strcpy( fullName, cwdName );
+    if( fullName[ strlen( fullName ) - 1 ] != '/' )
+      strncat( fullName, "/", FTP_CWD_SIZE );
+    strncat( fullName, param, FTP_CWD_SIZE );
+  }
+  else
+    strcpy( fullName, param );
+  // If ends with '/', remove it
+  uint16_t strl = strlen( fullName ) - 1;
+  if( fullName[ strl ] == '/' && strl > 1 )
+    fullName[ strl ] = 0;
+  if( strlen( fullName ) < FTP_CWD_SIZE )
+    return true;
+
+  client.println( "500 Command line too long");
+  return false;
+}
+
+// Calculate year, month, day, hour, minute and second
+//   from first parameter sent by MDTM command (YYYYMMDDHHMMSS)
+//
+// parameters:
+//   pyear, pmonth, pday, phour, pminute and psecond: pointer of
+//     variables where to store data
+//
+// return:
+//    0 if parameter is not YYYYMMDDHHMMSS
+//    length of parameter + space
+
+uint8_t FtpServer::getDateTime( uint16_t * pyear, uint8_t * pmonth, uint8_t * pday,
+                                uint8_t * phour, uint8_t * pminute, uint8_t * psecond )
+{
+  char dt[ 15 ];
+
+  // Date/time are expressed as a 14 digits long string
+  //   terminated by a space and followed by name of file
+  if( strlen( parameters ) < 15 || parameters[ 14 ] != ' ' )
+    return 0;
+  for( uint8_t i = 0; i < 14; i++ )
+    if( ! isdigit( parameters[ i ]))
+      return 0;
+
+  strncpy( dt, parameters, 14 );
+  dt[ 14 ] = 0;
+  * psecond = atoi( dt + 12 ); 
+  dt[ 12 ] = 0;
+  * pminute = atoi( dt + 10 );
+  dt[ 10 ] = 0;
+  * phour = atoi( dt + 8 );
+  dt[ 8 ] = 0;
+  * pday = atoi( dt + 6 );
+  dt[ 6 ] = 0 ;
+  * pmonth = atoi( dt + 4 );
+  dt[ 4 ] = 0 ;
+  * pyear = atoi( dt );
+  return 15;
+}
+
+// Create string YYYYMMDDHHMMSS from date and time
+//
+// parameters:
+//    date, time 
+//    tstr: where to store the string. Must be at least 15 characters long
+//
+// return:
+//    pointer to tstr
+
+char * FtpServer::makeDateTimeStr( char * tstr, uint16_t date, uint16_t time )
+{
+  sprintf( tstr, "%04u%02u%02u%02u%02u%02u",
+           (( date & 0xFE00 ) >> 9 ) + 1980, ( date & 0x01E0 ) >> 5, date & 0x001F,
+           ( time & 0xF800 ) >> 11, ( time & 0x07E0 ) >> 5, ( time & 0x001F ) << 1 );            
+  return tstr;
+}
+
+bool FtpServer::haveParameter()
+{
+  if( parameters != NULL && strlen( parameters ) > 0 )
+    return true;
+  client.println ("501 No file name");
+  return false;  
+}
+bool FtpServer::makeExistsPath( char * path, char * param )
+{
+  if( ! makePath( path, param ))
+    return false;
+  if( SD_MMC.exists( path ))
+    return true;
+  client.println("550 " + String(path) + " not found.");
+
+  return false;
+}
