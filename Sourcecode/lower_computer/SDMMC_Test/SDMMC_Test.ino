@@ -256,13 +256,6 @@ void setup()
    listDir(SD_MMC, "/", 2);
    /**
     * Listing directory: /
-    *   DIR : /mydir
-    *   DIR : /System Volume Information
-    *   DIR : /overlay
-    *   DIR : /sdcard
-    * Removing Dir: /mydir
-    * Dir removed
-    * Listing directory: /
     *   DIR : /System Volume Information
     * Listing directory: /System Volume Information
     *   FILE: /System Volume Information/IndexerVolumeGuid  SIZE: 76

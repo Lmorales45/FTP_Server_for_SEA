@@ -43,7 +43,7 @@
 
 ## 板卡型号
 
-### Spartan Edge Accelerator Board v1.0 &nbsp; \[[详情](https://wiki.seeedstudio.com/cn/Spartan-Edge-Accelerator-Board/)]
+### Spartan Edge Accelerator Board v1.0 &nbsp; \[[详情](https://wiki.seeedstudio.com/cn/Spartan-Edge-Accelerator-Board/)]  \[[示例](hhttps://github.com/DoneSEA/SEA)]
 
 > #### FPGA 	
 > 
@@ -109,9 +109,10 @@
 | &nbsp;&emsp; \|-- 技术路线.vsdx                                         | Visio设计文件         |
 | &nbsp;&emsp; \|-- 系统框图.vsdx                                         | Vison设计文件         |
 | \|-- images                                                             | 项目图片              |
-| &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图              |
-| &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示              |
 | &nbsp;&emsp; \|-- 技术路线.png                                          | 技术路线              |
+| &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示              |
+| &nbsp;&emsp; \|-- 文件目录序列化.png                                    | 技术路线              |
+| &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图              |
 | \|-- ExecutableFiles                                                    | 项目可执行文件        |
 | \|-- Sourcecode                                                         | 项目源码              |
 | &nbsp;&emsp; \|-- lower_computer                                        | 下位机                |
@@ -140,6 +141,10 @@
 
 
 ## 作品照片
+
+### 文件目录序列化
+
+![文件目录序列化](images/文件目录序列化.png)
 
 ### 屏幕显示
 
