@@ -4,7 +4,22 @@
 
 ## 项目简介
 
-本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板，目标为使用ESP32实现可以为局域网提供服务的FTP服务器，同时对SD卡的文件目录结构进行实时扫描，并将扫描结果与文件操作信息发送至上位机，上位机对信息进行图形化处理，并对图片进行压缩后以比特流的形式返回至ESP32，ESP32将比特流通过<abbr title="Quad SPI">QSPI</abbr>转发给FPGA，FPGA解码后将图片信息输出至HDMI接口，通过与HDMI接口连接的显示器便可以实时监测该FTP服务器的活动。
+本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板, 目标为将项目[ESP32_FTPServer_SD_MMC]([spartan-edge-esp32-boot](https://github.com/Pillar1989/spartan-edge-esp32-boot))移植到SEA平台并再此基础上添加新的功能与特性
+
+### 项目功能
+
+* ESP32: 
+  - 实现可以为局域网提供服务的FTP服务器
+  - 对SD卡的文件目录结构进行实时扫描
+  - 将扫描结果与文件操作信息通过HTTP请求发送至上位机
+  - 读取上位机的比特流响应
+  - 将比特流通过<abbr title="Quad SPI">QSPI</abbr>写入Spartan-7的RAM,
+* 上位机:
+  - 对SEA通过HTTP请求发送的信息渲染成图片, 并对图片进行压缩后以比特流的形式响应
+* Spartan-7:
+  - QSPI从机接收ESP32发送的关于图像的bitstream
+  - 对图像信息进行解码
+  - 将解码后的图片信息输出至HDMI接口
 
 ## 项目团队名称: &nbsp; **肝×ULLONG_MAX**
 
@@ -99,45 +114,51 @@
 > | ADC              | 8位 ADC1173   |
 > | 加速度计和陀螺仪 | 6轴 LSM6DS3TR |
 
-## 仓库目录结构 (分支 `shi` 尚未合并)
+## 仓库目录结构
 
-| 文件目录                                                                | 备注                  |
-| ----------------------------------------------------------------------- | --------------------- |
-| \|-- README.md                                                          | 项目介绍              |
-| \|-- LICENSE                                                            | 开源协议              |
-| \|-- doc                                                                | 项目相关文档          |
-| &nbsp;&emsp; \|-- 技术路线.vsdx                                         | Visio设计文件         |
-| &nbsp;&emsp; \|-- 系统框图.vsdx                                         | Vison设计文件         |
-| \|-- images                                                             | 项目图片              |
-| &nbsp;&emsp; \|-- 技术路线.png                                          | 技术路线              |
-| &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示              |
-| &nbsp;&emsp; \|-- 文件目录序列化.png                                    | 技术路线              |
-| &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图              |
-| \|-- ExecutableFiles                                                    | 项目可执行文件        |
-| \|-- Sourcecode                                                         | 项目源码              |
-| &nbsp;&emsp; \|-- lower_computer                                        | 下位机                |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- .clang-format                            | 代码格式规范          |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test                  | FTP服务器测试项目     |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test.ino | FTP服务器测试项目文件 |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.cpp          | FTP服务器源文件       |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.h            | FTP服务器头文件       |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- HTTP_test                                | HTTP测试项目          |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- HTTP_test.ino               | HTTP测试项目文件      |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- POST_test                                | POST请求测试项目      |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- POST_test.ino               | POST请求测试项目文件  |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- SDMMC_test                               | SD_MMC测试项目        |
-| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- SDMMC_test.ino              | SD_MMC测试项目文件    |
-| &nbsp;&emsp; \|-- upper_computer                                        | 上位机 (Django项目)   |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- API.md                                   | API接口描述文件       |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- db.sqlite3                               | 项目数据库文件        |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- form.jsonc                               | 格式化示例文件        |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- manage.py                                | 项目控制文件          |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- requirements.txt                         | 环境依赖描述文件      |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- response.bit                             | 响应体示例文件        |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- temp.jpg                                 | 图片渲染结果          |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- .idea                                    | PyCharm工程配置       |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- server                                   | Django 图片渲染App    |
-| &nbsp;&emsp; &nbsp;&emsp; \|-- upper_computer                           | Django 项目管理App    |
+| 文件目录                                                                | 备注                      |
+| ----------------------------------------------------------------------- | ------------------------- |
+| \|-- README.md                                                          | 项目介绍                  |
+| \|-- LICENSE                                                            | 开源协议                  |
+| \|-- doc                                                                | 项目相关文档              |
+| &nbsp;&emsp; \|-- 技术路线.vsdx                                         | Visio设计文件             |
+| &nbsp;&emsp; \|-- 系统框图.vsdx                                         | Vison设计文件             |
+| \|-- images                                                             | 项目图片                  |
+| &nbsp;&emsp; \|-- 技术路线.png                                          | 技术路线                  |
+| &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示                  |
+| &nbsp;&emsp; \|-- 文件目录序列化.png                                    | 技术路线                  |
+| &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图                  |
+| \|-- ExecutableFiles                                                    | 项目可执行文件            |
+| &nbsp;&emsp; \|-- EFIT.bit                                              | FPGA接收并显示图片        |
+| \|-- Sourcecode                                                         | 项目源码                  |
+| &nbsp;&emsp; \|-- EFIT_1.1                                              | vivado工程-接收并显示图片 |
+| &nbsp;&emsp; \|-- FTPServer_code                                        | FTP服务器项目             |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test.ino | FTP服务器项目文件         |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.cpp          | FTP服务器源文件           |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.h            | FTP服务器头文件           |
+| &nbsp;&emsp; \|-- lower_computer                                        | 下位机                    |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- .clang-format                            | 代码格式规范              |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test                  | FTP服务器测试项目         |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test.ino | FTP服务器测试项目文件     |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.cpp          | FTP服务器源文件           |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.h            | FTP服务器头文件           |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- HTTP_test                                | HTTP测试项目              |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- HTTP_test.ino               | HTTP测试项目文件          |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- POST_test                                | POST请求测试项目          |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- POST_test.ino               | POST请求测试项目文件      |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- SDMMC_test                               | SD_MMC测试项目            |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- SDMMC_test.ino              | SD_MMC测试项目文件        |
+| &nbsp;&emsp; \|-- upper_computer                                        | 上位机 (Django项目)       |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- API.md                                   | API接口描述文件           |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- db.sqlite3                               | 项目数据库文件            |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- form.jsonc                               | 格式化示例文件            |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- manage.py                                | 项目控制文件              |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- requirements.txt                         | 环境依赖描述文件          |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- response.bit                             | 响应体示例文件            |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- temp.jpg                                 | 图片渲染结果              |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- .idea                                    | PyCharm工程配置           |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- server                                   | Django 图片渲染App        |
+| &nbsp;&emsp; &nbsp;&emsp; \|-- upper_computer                           | Django 项目管理App        |
 
 
 ## 作品照片

@@ -516,9 +516,15 @@ boolean FtpServer::processCommand()
 
       client.println("257 \"" + String(cwdName) + "\" is your current directory");
    }
-   //
-   //*    QUIT - Sign Out
-   //
+
+   /**
+    * QUIT - Sign Out
+    * 退出登录
+    * 此命令终止USER，如果没有数据传输，服务器关闭控制连接
+    * 如果有数据传输，在 得到传输响应后服务器关闭控制连接
+    * 如果用户进程正在向不同的USER传输数据，不希望对每个USER关闭然后再打开，可以使用REIN
+    * 对控制连接的意外关闭，可以导致服务器运行中止(ABOR)和退出登录(QUIT)。
+    */
    else if (!strcmp(command, "QUIT")) {
 
 #ifdef FTP_DEBUG
@@ -1363,6 +1369,7 @@ boolean FtpServer::processCommand()
 
    /**
      * FEAT - New Features
+     * 获取支持的高级功能
      */
    else if (!strcmp(command, "FEAT")) {
 
@@ -1377,6 +1384,7 @@ boolean FtpServer::processCommand()
 
    /**
      * MDTM - File Modification Time (see RFC 3659)
+     * 获取文件修改时间
      */
    else if (!strcmp(command, "MDTM")) {
 
@@ -1389,6 +1397,7 @@ boolean FtpServer::processCommand()
 
    /**
      * SIZE - Size of the file
+     * 获取文件大小
      */
    else if (!strcmp(command, "SIZE")) {
 
@@ -1434,6 +1443,7 @@ boolean FtpServer::processCommand()
 
    /**
      * SITE - System command
+     * 系统设置
      */
    else if (!strcmp(command, "SITE")) {
 
@@ -1446,6 +1456,7 @@ boolean FtpServer::processCommand()
 
    /**
      * Unrecognized commands ...
+     * 其他未知请求类型
      */
    else {
 

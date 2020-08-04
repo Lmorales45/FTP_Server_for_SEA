@@ -81,6 +81,8 @@
 **响应头:**
 - width: 1440
 - height: 900
+- Content-Type: application/octet-stream
+- Content-Length: 115201
 
 **响应体:**
 ```
@@ -10215,13 +10217,16 @@
 
 **返回参数说明** 
 
-| 参数名 | 类型      | 说明     | 备注                                           |
-| :----- | :-------- | -------- | ---------------------------------------------- |
-| width  | int       | 图像宽度 |
-| height | int       | 图像高度 |
-| 响应体 | bitstream | 图像数据 | 行优先, 二阶灰度, 1bit表示一个像素, 以\xff结尾 |
+| 参数名         | 类型      | 说明       | 备注                                           |
+| :------------- | :-------- | ---------- | ---------------------------------------------- |
+| width          | int       | 图像宽度   | 单位为像素                                     |
+| height         | int       | 图像高度   | 单位为像素                                     |
+| Content-Type   | string    | 响应体类型 | 应为application/octet-stream                   |
+| Content-Length | int       | 响应体大小 | 单位为字节                                     |
+| 响应体         | bitstream | 图像数据   | 行优先, 二阶灰度, 1bit表示一个像素, 以\xff结尾 |
 
-
+- : application/octet-stream
+- Content-Length: 115201
 
 
 

@@ -23,7 +23,8 @@ HTTPClient upper_computer;
 String     json_str;
 
 void listDir(fs::FS &fs, JsonArray &dir, const char *dirname, uint8_t levels = 0);
-// void listDir(fs::FS &fs, String &json_str, const char *dirname, uint8_t levels = 0);
+void listDir(fs::FS &fs, const char *dirname, uint8_t levels = 0);
+void listDir(fs::FS &fs, String &json_str, const char *dirname, uint8_t levels = 0);
 bool int2Uint8(int x, uint8_t *p, int length = 4);
 void updateJsonStr(String &json_str);
 // void updateJsonStrByDoc(String &json_str);
@@ -117,7 +118,7 @@ void loop()
          WiFiClient response = upper_computer.getStream();              // 获取响应体中数据流
 
          uint8_t data[32];     // 将要通过QSPI进行传输的数据
-         int     address = 0;  // 将要传输数据的第一位位于bitstream的第几位
+         int     address = 0;  // 将要传输数据的第一个字节位于所有数据的第几个字节
          int     c       = 0;  // 储存一字节的数据
          int     ptr     = 8;  // 指向data数据的指针, 0~3字节是宽度, 4~7字节是高度
 
@@ -167,11 +168,22 @@ void updateJsonStr(String &json_str)
    json_str = "{";
    json_str += "\"root\":[";
 
-   json_str += listDir(SD_MMC, "/", 5);
+   listDir(SD_MMC, json_str, "/", 0);
 
    json_str += "]";
    json_str += "}";
 }
+
+// void updateJsonStr(String &json_str)
+// {
+//    json_str = "{";
+//    json_str += "\"root\":[";
+
+//    json_str += listDir(SD_MMC, "/", 5);
+
+//    json_str += "]";
+//    json_str += "}";
+// }
 
 // void updateJsonStrByDoc(String &json_str)
 // {
@@ -187,9 +199,8 @@ void updateJsonStr(String &json_str)
 // }
 
 
-String listDir(fs::FS &fs, const char *dirname, uint8_t levels)
+void listDir(fs::FS &fs, String &json_str, const char *dirname, uint8_t levels)
 {
-   String json_str = "";
 #ifdef DEPTH_DEBUG
    Serial.printf("Listing directory: %s\n", dirname);
 #endif
@@ -205,6 +216,60 @@ String listDir(fs::FS &fs, const char *dirname, uint8_t levels)
       Serial.println("Not a directory");
 #endif
       return;
+   }
+   String folders = "{";
+   for (File file = root.openNextFile(); file; file = root.openNextFile()) {
+      String path = file.name();
+      String name = path.substring(path.lastIndexOf("/") + 1);
+      if (file.isDirectory()) {
+#ifdef DEPTH_DEBUG
+         Serial.print("  DIR : ");
+         Serial.println(file.name());
+#endif
+         folders += "\"" + name + "\":[";
+         if (levels > 0) {
+            listDir(fs, folders, file.name(), levels - 1);  // 递归调用
+         }
+         folders += "],";
+      }
+      else {
+#ifdef DEPTH_DEBUG
+         Serial.print("  FILE: ");
+         Serial.print(file.name());
+         Serial.print("  SIZE: ");
+         Serial.println(file.size());
+#endif
+         json_str += "\"" + name + "\",";
+      }
+   }
+
+   if (folders.endsWith(",")) {
+      folders.setCharAt(folders.lastIndexOf(","), '}');  // 用 '}' 替换多余的 ','
+   }
+   else {
+      folders += "}";
+   }
+   json_str += folders;
+}
+
+String listDir(fs::FS &fs, const char *dirname, uint8_t levels)
+{
+   String json_str = "";
+#ifdef DEPTH_DEBUG
+   Serial.printf("Listing directory: %s\n", dirname);
+#endif
+   File root = fs.open(dirname);
+   if (!root) {
+#ifdef DEPTH_DEBUG
+      Serial.println("Failed to open directory");
+#endif
+      return json_str;
+   }
+   if (!root.isDirectory()) {
+#ifdef DEPTH_DEBUG
+      Serial.println("Not a directory");
+#endif
+      return json_str;
    }
    String folders = "{";
    for (File file = root.openNextFile(); file; file = root.openNextFile()) {
@@ -242,52 +307,52 @@ String listDir(fs::FS &fs, const char *dirname, uint8_t levels)
    return json_str;
 }
 
-// void listDir(fs::FS &fs, JsonArray &dir, const char *dirname, uint8_t levels)
-// {
-// #ifdef DEPTH_DEBUG
-//    Serial.printf("Listing directory: %s\n", dirname);
-// #endif
-//    File root = fs.open(dirname);
-//    if (!root) {
-// #ifdef DEPTH_DEBUG
-//       Serial.println("Failed to open directory");
-// #endif
-//       return;
-//    }
-//    if (!root.isDirectory()) {
-// #ifdef DEPTH_DEBUG
-//       Serial.println("Not a directory");
-// #endif
-//       return;
-//    }
+void listDir(fs::FS &fs, JsonArray &dir, const char *dirname, uint8_t levels)
+{
+#ifdef DEPTH_DEBUG
+   Serial.printf("Listing directory: %s\n", dirname);
+#endif
+   File root = fs.open(dirname);
+   if (!root) {
+#ifdef DEPTH_DEBUG
+      Serial.println("Failed to open directory");
+#endif
+      return;
+   }
+   if (!root.isDirectory()) {
+#ifdef DEPTH_DEBUG
+      Serial.println("Not a directory");
+#endif
+      return;
+   }
 
-//    JsonObject folders = dir.createNestedObject();  // 该对象存放所有次级目录
+   JsonObject folders = dir.createNestedObject();  // 该对象存放所有次级目录
 
-//    for (File file = root.openNextFile(); file; file = root.openNextFile()) {
-//       if (file.isDirectory()) {
-// #ifdef DEPTH_DEBUG
-//          Serial.print("  DIR : ");
-//          Serial.println(file.name());
-// #endif
+   for (File file = root.openNextFile(); file; file = root.openNextFile()) {
+      if (file.isDirectory()) {
+#ifdef DEPTH_DEBUG
+         Serial.print("  DIR : ");
+         Serial.println(file.name());
+#endif
 
-//          JsonArray folder = folders.createNestedArray(file.name());
+         JsonArray folder = folders.createNestedArray(file.name());
 
-//          if (levels > 0) {
-//             listDir(fs, folder, file.name(), levels - 1);
-//          }
-//       }
-//       else {
-// #ifdef DEPTH_DEBUG
-//          Serial.print("  FILE: ");
-//          Serial.print(file.name());
-//          Serial.print("  SIZE: ");
-//          Serial.println(file.size());
-// #endif
+         if (levels > 0) {
+            listDir(fs, folder, file.name(), levels - 1);
+         }
+      }
+      else {
+#ifdef DEPTH_DEBUG
+         Serial.print("  FILE: ");
+         Serial.print(file.name());
+         Serial.print("  SIZE: ");
+         Serial.println(file.size());
+#endif
 
-//          dir.add(file.size());
-//       }
-//    }
-// }
+         dir.add(file.size());
+      }
+   }
+}
 
 bool int2Uint8(int x, uint8_t *p, int length)
 {
