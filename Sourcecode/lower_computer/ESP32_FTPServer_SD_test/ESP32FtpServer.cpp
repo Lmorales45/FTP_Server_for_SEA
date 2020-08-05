@@ -266,7 +266,7 @@ void FtpServer::handleFTP()  // 处理函数
    }
 }
 
-void FtpServer::clientConnected()  // 刚刚建立连接时调用
+void FtpServer::clientConnected()  // 连接成功, 刚刚建立连接时调用
 {
 #ifdef FTP_DEBUG
    Serial.println("Client connected!");
@@ -325,7 +325,7 @@ boolean FtpServer::userIdentity()  // 验证用户名
    return false;
 }
 
-boolean FtpServer::userPassword()  // 服务器验证密码
+boolean FtpServer::userPassword()  // 验证密码
 {
 #ifdef FTP_DEBUG
    Serial.println("call userPassword");
@@ -859,7 +859,7 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
       Serial.println("call processCommand-13");
 #endif
 
-      if (!dataConnect()) {
+      if (!dataConnect()) {  // 是否建立数据连接, 若未建立在尝试建立后返回建立结果
 #ifdef FTP_DEBUG
          Serial.println("call processCommand-13-1");
 #endif
@@ -872,12 +872,12 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 #endif
 
          client.println("150 Accepted data connection");
-         uint16_t nm = 0;
+         uint16_t nm = 0;  // 文件/次级目录计数器
          //            Dir dir= SD.openDir(cwdName);
          File dir = SD_MMC.open(cwdName);
          char dtStr[15];
          //    if(!SD.exists(cwdName))
-         if ((!dir) || (!dir.isDirectory())) {
+         if ((!dir) || (!dir.isDirectory())) {  // 若当前目录打开失败/当前目录不合法
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-13-2-1");
 #endif
@@ -885,32 +885,32 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
             client.println("550 Can't open directory " + String(cwdName));
             // client.println( "550 Can't open directory " +String(parameters) );
          }
-         else {
+         else {  // 当前目录打开成功
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-13-2-2");
 #endif
 
             //                while( dir.next())
-            File file = dir.openNextFile();
+            File file = dir.openNextFile();  // 返回当前目录中第一个文件/次级目录
             //                while( dir.openNextFile())
-            while (file) {
+            while (file) {  // 若当前目录中第一个文件/次级目录存在
                String fn, fs;
                fn      = file.name();
                int pos = fn.lastIndexOf("/");  //ищем начало файла по последнему "/"
                fn.remove(0, pos + 1);          //Удаляем все до имени файла включительно
-               if (file.isDirectory()) {
+               if (file.isDirectory()) {       // 若为次级目录
                   data.println(fn);
                   //                        data.println( "Type=dir;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
                   //                        data.println( "Type=dir;modify=20000101000000; " + fn);
                }
-               else {
-                  fs = String(file.size());
+               else {                        // 若为文件
+                  fs = String(file.size());  // 获得该文件的大小
                   data.println(fs + " " + fn);
                   //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101160656;" +" " + fn);
                   //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
                }
-               nm++;
-               file = dir.openNextFile();
+               nm++;                       // 计数器+1;
+               file = dir.openNextFile();  // 获得下一个文件/次级目录
             }
             client.println("226-options: -a -l");
             client.println("226 " + String(nm) + " matches total");
@@ -1095,9 +1095,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 #endif
 
             client.println("150 Connected to port " + String(dataPort));
-            millisBeginTrans = millis();
-            bytesTransfered  = 0;  // 已传输字节计数器清零
-            transferStatus   = 2;  // 文件传输状态设置为上传
+            millisBeginTrans = millis();  // 更新文件上传开始时间
+            bytesTransfered  = 0;         // 已传输字节计数器清零
+            transferStatus   = 2;         // 文件传输状态设置为上传
          }
       }
    }
@@ -1427,7 +1427,7 @@ boolean FtpServer::dataConnect()  // 进行数据连接
    return data.connected();  // 返回现在是否成功建立数据连接
 }
 
-boolean FtpServer::doRetrieve()  // 下载文件的中的一块, 文件下载完全完成后返回false
+boolean FtpServer::doRetrieve()  // 下载文件的中的一块数据, 文件下载完全完成后返回false
 {
 #ifdef FTP_DEBUG
    Serial.println("call doRetrieve");
@@ -1455,7 +1455,7 @@ boolean FtpServer::doRetrieve()  // 下载文件的中的一块, 文件下载完
    return false;     // 重置传输状态
 }
 
-boolean FtpServer::doStore()  // 上传文件的中的一块, 文件上传完全完成后返回false
+boolean FtpServer::doStore()  // 上传文件的中的一块数据, 文件上传完全完成后返回false
 {
 #ifdef FTP_DEBUG
    Serial.println("call doStore");
@@ -1699,7 +1699,7 @@ int8_t FtpServer::readChar()
  * @return:
  *        true, if done
  */
-boolean FtpServer::makePath(char *fullName)
+boolean FtpServer::makePath(char *fullName)  // 计算出目标路径, 默认为请求中的参数为目标
 {
 #ifdef FTP_DEBUG
    Serial.println("call makePath");

@@ -64,7 +64,7 @@
 // size of file buffer for read/write
 // #define FTP_BUF_SIZE 2 * 1460  //512
 //  700 KByte/s download in AP mode, direct connection.
-#define FTP_BUF_SIZE 4096  //512
+#   define FTP_BUF_SIZE 4096  //512
 
 class FtpServer
 {
@@ -73,29 +73,29 @@ class FtpServer
    void handleFTP();
 
   private:
-   bool    haveParameter();
-   bool    makeExistsPath(char *path, char *param = NULL);
-   void    iniVariables();
-   void    clientConnected();
-   void    disconnectClient();
-   boolean userIdentity();
-   boolean userPassword();
-   boolean processCommand();
-   boolean dataConnect();
-   boolean doRetrieve();
-   boolean doStore();
-   void    closeTransfer();
-   void    abortTransfer();
-   boolean makePath(char *fullname);
-   boolean makePath(char *fullName, char *param);
+   bool    haveParameter();                                 // 判断请求中是否存在参数
+   bool    makeExistsPath(char *path, char *param = NULL);  // 计算出目标路径, 并判断目标路径是否存在
+   void    iniVariables();                                  // 变量初始化
+   void    clientConnected();                               // 成功建立连接
+   void    disconnectClient();                              // 中断连接
+   boolean userIdentity();                                  // 验证用户名
+   boolean userPassword();                                  // 服务器验证密码
+   boolean processCommand();                                // 解析客户请求指令
+   boolean dataConnect();                                   // 启动数据连接
+   boolean doRetrieve();                                    // 下载文件的中的一块数据
+   boolean doStore();                                       // 上传文件的中的一块数据
+   void    closeTransfer();                                 // 传输活动因传输完成终止
+   void    abortTransfer();                                 // 数据传输活动因意外终止
+   boolean makePath(char *fullname);                        // 计算出目标路径, 默认为请求中的参数为目标
+   boolean makePath(char *fullName, char *param);           // 计算出目标路径
    uint8_t getDateTime(uint16_t *pyear, uint8_t *pmonth, uint8_t *pday,
-                       uint8_t *phour, uint8_t *pminute, uint8_t *second);
+                       uint8_t *phour, uint8_t *pminute, uint8_t *second);  // 获取当前日期与时间(未使用)
    char *  makeDateTimeStr(char *tstr, uint16_t date, uint16_t time);
-   int8_t  readChar();
+   int8_t  readChar();  // 从FTP连接中读取请求行的一个字符
 
-   IPAddress  dataIp;  // IP address of client for data
-   WiFiClient client;
-   WiFiClient data;
+   IPAddress  dataIp;  // IP address of client for data 数据传输连接的IP
+   WiFiClient client;  // 客户连接
+   WiFiClient data;    // 数据传输连接
 
    File file;
 
@@ -111,12 +111,12 @@ class FtpServer
    int8_t   cmdStatus,              // status of ftp command connexion
       transferStatus;               // status of ftp data transfer
    uint32_t millisTimeOut,          // disconnect after 5 min of inactivity
-      millisDelay,
-      millisEndConnection,  //
-      millisBeginTrans,     // store time of beginning of a transaction
-      bytesTransfered;      //
-   String _FTP_USER;        // begin方法设置的用户名
-   String _FTP_PASS;        // begin方法设置的密码
+      millisDelay,                  // 延迟时的终止时间
+      millisEndConnection,          // 相应请求的终止时间
+      millisBeginTrans,             // store time of beginning of a transaction 文件上传开始时间
+      bytesTransfered;              // 数据传输传输的字节u
+   String _FTP_USER;                // begin方法设置的用户名
+   String _FTP_PASS;                // begin方法设置的密码
 };
 
 #endif  // FTP_SERVERESP_H
