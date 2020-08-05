@@ -1,0 +1,4 @@
+Running: xsim.dir/EFIT_behav/xsimk.exe -simmode gui -wdb EFIT_behav.wdb -simrunnum 0 -socket 60720
+Design successfully loaded
+Design Loading Memory Usage: 11536 KB (Peak: 11536 KB)
+Design Loading CPU Usage: 139 ms

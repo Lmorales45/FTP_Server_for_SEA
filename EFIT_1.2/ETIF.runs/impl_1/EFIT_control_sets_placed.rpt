@@ -1,0 +1,110 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Wed Aug  5 16:00:17 2020
+| Host         : ThinkPad running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file EFIT_control_sets_placed.rpt
+| Design       : EFIT
+| Device       : xc7s15
+------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |    37 |
+| Unused register locations in slices containing registers |   142 |
++----------------------------------------------------------+-------+
+
+
+2. Histogram
+------------
+
++--------+--------------+
+| Fanout | Control Sets |
++--------+--------------+
+|      1 |           11 |
+|      2 |            1 |
+|      4 |            4 |
+|      5 |            1 |
+|      8 |            7 |
+|     10 |            2 |
+|     11 |            1 |
+|     12 |            1 |
+|     15 |            2 |
+|    16+ |            7 |
++--------+--------------+
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |              51 |           20 |
+| No           | No                    | Yes                    |              34 |           14 |
+| No           | Yes                   | No                     |              42 |           17 |
+| Yes          | No                    | No                     |               0 |            0 |
+| Yes          | No                    | Yes                    |             259 |          102 |
+| Yes          | Yes                   | No                     |               0 |            0 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++-----------------------+----------------------------------------------------+-------------------------------------------------------------------------------+------------------+----------------+
+|      Clock Signal     |                    Enable Signal                   |                                Set/Reset Signal                               | Slice Load Count | Bel Load Count |
++-----------------------+----------------------------------------------------+-------------------------------------------------------------------------------+------------------+----------------+
+| ~I_qspi_clk_IBUF_BUFG |                                                    | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[6]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[5]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[1]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  clk_10/inst/clk_out1 | Driver_HDMI0/inst/Set_X0_carry__0_n_2              | Driver_HDMI0/inst/RGB_HSync_i_2_n_0                                           |                1 |              1 |
+|  clk_10/inst/clk_out1 | Driver_HDMI0/inst/Set_Y0_carry__0_n_2              | Driver_HDMI0/inst/RGB_HSync_i_2_n_0                                           |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[3]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[2]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[7]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[0]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_INS[4]_i_1_n_0                      | I_qspi_cs_IBUF                                                                |                1 |              1 |
+|  clk_10/inst/clk_out1 |                                                    | rgb2dvi/U0/ClockGenInternal.ClockGenX/in0                                     |                1 |              2 |
+|  clk_10/inst/clk_out1 |                                                    | rgb2dvi/U0/ClockGenInternal.ClockGenX/LockLostReset/SyncAsyncx/oSyncStages[1] |                1 |              4 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[0][7]_i_1_n_0 | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |                3 |              4 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[0][7]_i_1_n_0 | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                2 |              4 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_o_data[7]                           | I_qspi_cs_IBUF                                                                |                1 |              4 |
+|  I_qspi_clk_IBUF_BUFG |                                                    |                                                                               |                2 |              5 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[1][7]_i_1_n_0 | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                3 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[3][7]_i_1_n_0 | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                4 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[4][7]_i_1_n_0 | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                4 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[5][7]_i_1_n_0 | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |                5 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[6][7]_i_1_n_0 | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |                5 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[7][7]_i_1_n_0 | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |                3 |              8 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/mem_Img_format[2][7]_i_1_n_0 | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                5 |              8 |
+|  I_qspi_clk_IBUF_BUFG |                                                    | I_qspi_cs_IBUF                                                                |                4 |             10 |
+|  clk_10/inst/clk_out1 |                                                    | rgb2dvi/U0/DataEncoders[0].DataEncoder/pDataOutRaw[9]_i_1__1_n_0              |                3 |             10 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/addr0                                 | I_qspi_cs_IBUF                                                                |                3 |             11 |
+|  clk_10/inst/clk_out1 | Driver_HDMI0/inst/VSync_Cnt0                       | Driver_HDMI0/inst/RGB_HSync_i_2_n_0                                           |                3 |             12 |
+|  I_qspi_clk_IBUF_BUFG | u_qspi_slave/R_o_addr                              | I_qspi_cs_IBUF                                                                |                3 |             15 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/addr[0]_i_1_n_0              | get_data_from_esp32_0/addr[0]_i_3_n_0                                         |                4 |             15 |
+|  clk_10/inst/clk_out1 |                                                    | Driver_HDMI0/inst/RGB_HSync_i_2_n_0                                           |                7 |             17 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/deepth                       | get_data_from_esp32_0/i[31]_i_3_n_0                                           |               11 |             28 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/i[31]_i_1_n_0                | get_data_from_esp32_0/i[31]_i_3_n_0                                           |                9 |             32 |
+|  clk_10/inst/clk_out1 |                                                    | rgb2dvi/U0/DataEncoders[0].DataEncoder/SR[0]                                  |               14 |             32 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/temp                         | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |                8 |             32 |
+|  clk_10/inst/clk_out1 | get_data_from_esp32_0/deepth                       | get_data_from_esp32_0/mem_Img_format[0][7]_i_2_n_0                            |               16 |             36 |
+|  clk_10/inst/clk_out1 |                                                    |                                                                               |               18 |             46 |
++-----------------------+----------------------------------------------------+-------------------------------------------------------------------------------+------------------+----------------+
+
+
