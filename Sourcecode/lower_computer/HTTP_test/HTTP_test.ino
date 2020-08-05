@@ -54,38 +54,38 @@ void setup()
    Serial.println(WiFi.localIP());
 #endif
 
-   if (!SD_MMC.begin()) {
-#ifdef BASE_DEBUG
-      Serial.println("Card Mount Failed");
-#endif
-      return;
-   }
-   uint8_t cardType = SD_MMC.cardType();
+   //    if (!SD_MMC.begin()) {
+   // #ifdef BASE_DEBUG
+   //       Serial.println("Card Mount Failed");
+   // #endif
+   //       return;
+   //    }
+   //    uint8_t cardType = SD_MMC.cardType();
 
-   if (cardType == CARD_NONE) {
-#ifdef BASE_DEBUG
-      Serial.println("No SD_MMC card attached");
-#endif
-      return;
-   }
+   //    if (cardType == CARD_NONE) {
+   // #ifdef BASE_DEBUG
+   //       Serial.println("No SD_MMC card attached");
+   // #endif
+   //       return;
+   //    }
 
-#ifdef BASE_DEBUG
-   Serial.print("SD_MMC Card Type: ");
-   if (cardType == CARD_MMC) {
-      Serial.println("MMC");
-   }
-   else if (cardType == CARD_SD) {
-      Serial.println("SDSC");
-   }
-   else if (cardType == CARD_SDHC) {
-      Serial.println("SDHC");
-   }
-   else {
-      Serial.println("UNKNOWN");
-   }
-   uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
-   Serial.printf("SD_MMC Card Size: %lluMB\n", cardSize);
-#endif
+   // #ifdef BASE_DEBUG
+   //    Serial.print("SD_MMC Card Type: ");
+   //    if (cardType == CARD_MMC) {
+   //       Serial.println("MMC");
+   //    }
+   //    else if (cardType == CARD_SD) {
+   //       Serial.println("SDSC");
+   //    }
+   //    else if (cardType == CARD_SDHC) {
+   //       Serial.println("SDHC");
+   //    }
+   //    else {
+   //       Serial.println("UNKNOWN");
+   //    }
+   //    uint64_t cardSize = SD_MMC.cardSize() / (1024 * 1024);
+   //    Serial.printf("SD_MMC Card Size: %lluMB\n", cardSize);
+   // #endif
 
    //设置超时
    upper_computer.setTimeout(HTTP_TIMEOUT);
@@ -102,7 +102,8 @@ void setup()
 
 void loop()
 {
-   updateJsonStr(json_str);  //生成json字符串
+   // updateJsonStr(json_str);  //生成json字符串
+   json_str     = "{\"client\":{\"ip\":\"192.168.1.100\"},\"operation\":{\"original_path\":\"/root/folder4\",\"type\":32,\"modified_path\":\"/root/folder1\"},\"root\":[\"file_1.txt\",\"file_1.txt\",\"file_1.txt\",{\"folser_1\":[\"folder1_file_4.txt\",\"folder1_file_5.txt\",{\"folser_3\":[\"folder1_folser3_file_6.txt\",\"folder1_folser3_file_7.txt\"]}],\"folser_2\":[]}]}";
    int httpCode = upper_computer.POST(json_str);
    if (httpCode > 0) {
 #ifdef BASE_DEBUG
@@ -134,7 +135,10 @@ void loop()
             else {  // 缓存区接收到数据
 
                c = response.read();  // 读取一字节数据
-               if (c < 0xff) {       // 读到的不是终止符
+#ifdef DEPTH_DEBUG
+               Serial.print(c);
+#endif
+               if (c < 0xff) {  // 读到的不是终止符
                   data[ptr++] = c;
                }
                if (ptr == 32) {  // 已经读取32个字节的数据
@@ -148,9 +152,12 @@ void loop()
                }
             }
             if (c == 0xff ||                          // 收到结束符
-                (address - 2) >= size ||              // 数据量异常
+                address >= size ||                    // 数据量异常
                 time_now - time_begin > HTTP_TIMEOUT  // 等待时间过长
             ) {
+#ifdef DEPTH_DEBUG
+               Serial.println("\nHTTP response success!");
+#endif
                break;  // 跳出循环
             }
          }
