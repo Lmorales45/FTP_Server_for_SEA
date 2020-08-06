@@ -19,6 +19,7 @@
  */
 // 2017: modified by @robo8080
 // 2019: modified by @fa1ke5
+// 2020: modified by @Zuoqiu-Yingyi
 
 #include "ESP32FtpServer.h"
 
@@ -86,7 +87,8 @@ void FtpServer::handleFTP()  // 处理函数
    }
 
    if (ftpServer.hasClient()) {  // 有新的客户连接
-                                 //    if (ftpServer.available()) {
+
+      //    if (ftpServer.available()) {
 
 #ifdef FTP_DEBUG
       Serial.println("call handleFTP-2");
@@ -119,7 +121,7 @@ void FtpServer::handleFTP()  // 处理函数
       abortTransfer();  // 终止数据传输活动
       iniVariables();   // 初始化变量
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
       Serial.println("Ftp server waiting for connection on port " + String(FTP_CTRL_PORT));
 #endif
 
@@ -149,7 +151,7 @@ void FtpServer::handleFTP()  // 处理函数
       Serial.println("call handleFTP-6");
 #endif
 
-      if (cmdStatus == 3) {  // Ftp server waiting for user identity 服务器应该验证用户了
+      if (cmdStatus == 3) {  // Ftp server waiting for user identity 服务器该验证用户了
 
 #ifdef FTP_DEBUG
          Serial.println("call handleFTP-6-1");
@@ -170,7 +172,7 @@ void FtpServer::handleFTP()  // 处理函数
             cmdStatus = 0;  // 重置服务器状态
          }
       }
-      else if (cmdStatus == 4)  // Ftp server waiting for user registration 服务器应该验证密码了
+      else if (cmdStatus == 4)  // Ftp server waiting for user registration 服务器该验证密码了
       {
 #ifdef FTP_DEBUG
          Serial.println("call handleFTP-6-2");
@@ -222,7 +224,7 @@ void FtpServer::handleFTP()  // 处理函数
 
       cmdStatus = 1;  // 状态: 初始化变量后等待下一次连接申请
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
       Serial.println("client disconnected");
 #endif
    }
@@ -268,7 +270,7 @@ void FtpServer::handleFTP()  // 处理函数
 
 void FtpServer::clientConnected()  // 连接成功, 刚刚建立连接时调用
 {
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
    Serial.println("Client connected!");
 #endif
 
@@ -280,7 +282,7 @@ void FtpServer::clientConnected()  // 连接成功, 刚刚建立连接时调用
 
 void FtpServer::disconnectClient()  // 中断连接
 {
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
    Serial.println(" Disconnecting client");
 #endif
 
@@ -351,6 +353,8 @@ boolean FtpServer::userPassword()  // 验证密码
    else {  // 若客户端密码参数匹配服务器设置的密码
 #ifdef FTP_DEBUG
       Serial.println("call userPassword-3");
+#endif
+#ifdef FTP_LOG
       Serial.println("OK. Waiting for commands.");
 #endif
 
@@ -555,7 +559,7 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
       //data.connect( dataIp, dataPort );
       //data = dataServer.available();
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
       Serial.println("Connection management set to passive");
       Serial.println("Data port set to " + String(dataPort));
 #endif
@@ -567,7 +571,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
    /**
      * PORT - Data Port
      * 数据端口
-     * 参数是要使用的数据连接端口，通常情况下对此不需要命令响应。如果使用此命令时，要发送32位的IP地址和16位的TCP端口号。上面的信息以8位为一组，逗号间隔十进制传输，如下例：
+     * 参数是要使用的数据连接端口，通常情况下对此不需要命令响应。
+     * 如果使用此命令时，要发送32位的IP地址和16位的TCP端口号。
+     * 上面的信息以8位为一组，逗号间隔十进制传输，如下例：
      * PORT h1,h2,h3,h4,p1,p2
      */
    else if (!strcmp(command, "PORT")) {  // 服务器进入主动请求状态
@@ -822,7 +828,7 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
                int i = fn.lastIndexOf("/") + 1;
                fn.remove(0, i);
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
                Serial.println("File Name = " + fn);
 #endif
 
@@ -853,8 +859,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 
    /**
      * MLSD - Listing for Machine Processing (see RFC 3659)
+     * ! data发送的响应格式可能有误
      */
-   else if (!strcmp(command, "MLSD")) {  // 列出当前目录下的文件与次级目录(仅名称, MLSD方式, 响应格式不同)
+   else if (!strcmp(command, "MLSD")) {  // 列出当前目录下的文件与次级目录(MLSD方式, 响应格式不同)
 #ifdef FTP_DEBUG
       Serial.println("call processCommand-13");
 #endif
@@ -873,41 +880,43 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 
          client.println("150 Accepted data connection");
          uint16_t nm = 0;  // 文件/次级目录计数器
-         //            Dir dir= SD.openDir(cwdName);
+         // Dir dir= SD.openDir(cwdName);
          File dir = SD_MMC.open(cwdName);
          char dtStr[15];
-         //    if(!SD.exists(cwdName))
+         // if(!SD.exists(cwdName))
          if ((!dir) || (!dir.isDirectory())) {  // 若当前目录打开失败/当前目录不合法
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-13-2-1");
 #endif
 
-            client.println("550 Can't open directory " + String(cwdName));
             // client.println( "550 Can't open directory " +String(parameters) );
+            client.println("550 Can't open directory " + String(cwdName));
          }
          else {  // 当前目录打开成功
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-13-2-2");
 #endif
 
-            //                while( dir.next())
+            // while( dir.next())
             File file = dir.openNextFile();  // 返回当前目录中第一个文件/次级目录
-            //                while( dir.openNextFile())
+            // while( dir.openNextFile())
             while (file) {  // 若当前目录中第一个文件/次级目录存在
                String fn, fs;
                fn      = file.name();
                int pos = fn.lastIndexOf("/");  //ищем начало файла по последнему "/"
                fn.remove(0, pos + 1);          //Удаляем все до имени файла включительно
-               if (file.isDirectory()) {       // 若为次级目录
-                  data.println(fn);
-                  //                        data.println( "Type=dir;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
-                  //                        data.println( "Type=dir;modify=20000101000000; " + fn);
+               fs = String(file.size());       // 获得该文件的大小
+
+               if (file.isDirectory()) {  // 若为次级目录
+
+                  // data.println(fn);
+                  data.println("Type=dir;Size=" + fs + ";" + "modify=20000101000000;" + " " + fn);
+                  // data.println("Type=dir;modify=20000101000000; " + fn);
                }
-               else {                        // 若为文件
-                  fs = String(file.size());  // 获得该文件的大小
-                  data.println(fs + " " + fn);
+               else {  // 若为文件
+                  // data.println(fs + " " + fn);
                   //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101160656;" +" " + fn);
-                  //data.println( "Type=file;Size=" + fs + ";"+"modify=20000101000000;" +" " + fn);
+                  data.println("Type=file;Size=" + fs + ";" + "modify=20000101000000;" + " " + fn);
                }
                nm++;                       // 计数器+1;
                file = dir.openNextFile();  // 获得下一个文件/次级目录
@@ -959,9 +968,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 #endif
             File dir  = SD_MMC.open(cwdName);
             File file = dir.openNextFile();
-            //                while( dir.next())
+            // while( dir.next())
             while (file) {  // 使用<CRLF>("\r\n")分隔
-               //                    data.println( dir.fileName());
+               // data.println( dir.fileName());
                data.println(file.name());
                nm++;
                file = dir.openNextFile();
@@ -1010,7 +1019,8 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
          Serial.println("call processCommand-16-2");
 #endif
 
-         if (SD_MMC.exists(path)) {  // 目标是否存在
+         // if (SD_MMC.exists(path)) {
+         if (!SD_MMC.exists(path)) {  // 目标不存在
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-16-2-1");
 #endif
@@ -1169,6 +1179,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
             Serial.println("call processCommand-19-1-1");
             Serial.println(" Deleting " + String(parameters));
 #endif
+#ifdef FTP_LOG
+            Serial.println(" Deleting " + String(parameters));
+#endif
 
             client.println("250 \"" + String(parameters) + "\" deleted");
          }
@@ -1216,6 +1229,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
          else {  // 目标路径存在
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-20-2-2");
+            Serial.println("Renaming " + String(buf));
+#endif
+#ifdef FTP_LOG
             Serial.println("Renaming " + String(buf));
 #endif
 
@@ -1305,7 +1321,9 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 #endif
 
       client.println("211-Extensions suported:");
-      client.println(" MLSD");
+      if (FTP_NEW_FEATURES) {
+         client.println(" MLSD");
+      }
       client.println("211 End.");
    }
 
@@ -1345,14 +1363,14 @@ boolean FtpServer::processCommand()  // 验证客户请求指令
 #endif
 
          file = SD_MMC.open(path, "r");
-         if (!file) {  // 图片未成功访问
+         if (!file) {  // 文件未成功访问
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-24-2-1");
 #endif
 
             client.println("450 Can't open " + String(parameters));
          }
-         else {  // 图片成功访问
+         else {  // 文件成功访问
 #ifdef FTP_DEBUG
             Serial.println("call processCommand-24-2-2");
 #endif
@@ -1403,8 +1421,8 @@ boolean FtpServer::dataConnect()  // 进行数据连接
       Serial.println("call dataConnect-1");
 #endif
 
+      // while (!dataServer.available() && millis() - startTime < 10000)
       while (!dataServer.hasClient() && millis() - startTime < 10000)  // 若超时前接收到客户的连接请求, 跳出循环
-      //        while (!dataServer.available() && millis() - startTime < 10000)
       {
          //delay(100);
          yield();
@@ -1414,11 +1432,11 @@ boolean FtpServer::dataConnect()  // 进行数据连接
          Serial.println("call dataConnect-1-1");
 #endif
 
-         //        if (dataServer.available()) {
+         // if (dataServer.available()) {
          data.stop();                    // 终止之前的数据连接
          data = dataServer.available();  // 与新的客户建立数据连接
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
          Serial.println("ftpdataserver client....");
 #endif
       }
@@ -1527,7 +1545,7 @@ void FtpServer::abortTransfer()  // 数据传输活动因意外终止
       data.stop();   // 数据传输连接关闭
       client.println("426 Transfer aborted");
 
-#ifdef FTP_DEBUG
+#ifdef FTP_LOG
       Serial.println("Transfer aborted!");
 #endif
    }
@@ -1563,7 +1581,7 @@ int8_t FtpServer::readChar()
                                // client.readBytes((uint8_t*) c, 1);
 
 #ifdef FTP_DEBUG
-      // Serial.print(c);
+      Serial.print(c);
 #endif
 
       if (c == '\\') {  // 统一使用'/'作为分隔符

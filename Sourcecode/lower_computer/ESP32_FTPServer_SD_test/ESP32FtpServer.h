@@ -1,5 +1,5 @@
 
-/*
+/**
  * FTP SERVER FOR ESP8266
  * based on FTP Serveur for Arduino Due and Ethernet shield (W5100) or WIZ820io (W5200)
  * based on Jean-Michel Gallego's work
@@ -18,8 +18,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-//  2017: modified by @robo8080
-//  2019: modified by @fa1ke5
+// 2017: modified by @robo8080      https://github.com/robo8080/ESP32_FTPServer_SD
+// 2019: modified by @fa1ke5        https://github.com/fa1ke5/ESP32_FTPServer_SD_MMC
+// 2020: modified by @Zuoqiu-Yingyi https://github.com/Zuoqiu-Yingyi/FTP_Server_for_SEA/tree/master/Sourcecode/FTPServer_code
 
 /*******************************************************************************
  **                                                                            **
@@ -27,10 +28,19 @@
  **                                                                            **
  *******************************************************************************/
 
-// Uncomment to print debugging info to console attached to ESP32
-#define FTP_DEBUG
-// 运行日志, 比调试信息更重要
+// Uncomment to print debugging info to console attached to ESP8266
+
+// Test information (An identifier for each branch) will be printed to Serial after definition
+// 定义后将在每个分支中向控制台打印唯一标识, 方便快速快速定位
+// #define FTP_DEBUG
+
+// Run log will be printed to Serial after definition
+// 定义后将打印运行日志
 #define FTP_LOG
+
+// Setting to true will start new features
+// 设置为ture将启用FTP服务器的新特性
+#define FTP_NEW_FEATURES ture
 
 #ifndef FTP_SERVERESP_H
 
@@ -41,30 +51,37 @@
 #include <SD_MMC.h>
 #include <WiFiClient.h>
 
-#define FTP_SERVER_VERSION "FTP-2016-01-14"
+#define FTP_SERVER_VERSION "FTP-2020-08-06"
 
 // Command port on wich server is listening
 #define FTP_CTRL_PORT 21
+
 // Data port in passive mode
 #define FTP_DATA_PORT_PASV 50009
 
 // Disconnect client after 5 minutes of inactivity
 #define FTP_TIME_OUT 5
+
 // 与上一个客户终止连接后休眠时间(单位: ms)
 #define FTP_TIME_DELAY 200
+
 // max size of a command
 #define FTP_CMD_SIZE 255 + 8
+
 // max size of a directory name
 #define FTP_CWD_SIZE 255 + 8
+
 // max size of a file name
 #define FTP_FIL_SIZE 255
 
 // size of file buffer for read/write
 // #define FTP_BUF_SIZE 512       //512
+
 // size of file buffer for read/write
 // #define FTP_BUF_SIZE 2 * 1460  //512
+
 //  700 KByte/s download in AP mode, direct connection.
-#   define FTP_BUF_SIZE 4096  //512
+#define FTP_BUF_SIZE 4096  //512
 
 class FtpServer
 {

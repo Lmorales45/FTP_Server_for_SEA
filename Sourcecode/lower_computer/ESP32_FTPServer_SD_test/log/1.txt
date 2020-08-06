@@ -1,0 +1,281 @@
+
+request: USER esp32
+
+request: PASS esp32
+OK. Waiting for commands.
+
+request: SYST
+
+request: FEAT
+
+request: PWD
+
+request: TYPE I
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: LIST
+
+ftpdataserver client....
+
+File Name = System Volume Information
+
+File Name = md5.v
+
+File Name = overlay
+
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+File Name = board_config.ini
+
+client disconnected
+
+Ftp server waiting for connection on port 21
+
+request: TYPE I
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: STOR A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+ftpdataserver client....
+
+Receiving A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: LIST
+
+ftpdataserver client....
+
+File Name = System Volume Information
+
+File Name = md5.v
+
+File Name = overlay
+
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+File Name = board_config.ini
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: STOR md5.coe
+
+ftpdataserver client....
+
+Receiving md5.coe
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: LIST
+
+ftpdataserver client....
+
+File Name = System Volume Information
+
+File Name = md5.v
+
+File Name = md5.coe
+
+File Name = overlay
+
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+File Name = board_config.ini
+
+client disconnected
+
+Ftp server waiting for connection on port 21
+
+request: USER esp32
+
+request: PASS esp32
+
+OK. Waiting for commands.
+
+request: SYST
+
+request: FEAT
+
+request: PWD
+
+request: CWD overlay
+
+request: PWD
+
+request: TYPE I
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: LIST
+
+ftpdataserver client....
+
+File Name = a.bit
+
+client disconnected
+
+Client connected!
+
+request: USER esp32
+
+request: PASS esp32
+
+OK. Waiting for commands.
+
+request: CWD /overlay
+
+request: PWD
+
+request: CDUP
+
+request: PWD
+
+client disconnected
+
+Client connected!
+
+Disconnecting client
+
+Ftp server waiting for connection on port 21
+
+Client connected!
+
+request: USER esp32
+
+request: PASS esp32
+
+OK. Waiting for commands.
+
+request: CWD /
+
+request: PWDrequest: TYPE I
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: STOR A04_AES��MD5��CRCУ��_2018112800_����B.docx
+
+ftpdataserver client....
+
+Receiving A04_AES��MD5��CRCУ��_2018112800_����B.docx
+
+client disconnected
+
+Client connected!
+
+request: USER esp32request: PASS esp32
+
+OK. Waiting for commands.
+
+request: CWD /
+
+request: TYPE Irequest: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: STOR ����-201811200����B-��������Ƶ.zip
+
+ftpdataserver client....
+
+Receiving ����-201811200����B-��������Ƶ.zip
+
+client disconnected
+
+Ftp server waiting for connection on port 21
+
+Client connected!request: USER esp32request: PASS esp32
+
+OK. Waiting for commands.
+
+request: CWD /
+
+request: TYPE Irequest: PASV
+
+Connection management set to passive
+
+Data port set to 50009request: RETR md5.v
+
+client disconnected
+
+Ftp server waiting for connection on port 21
+
+request: USER esp32request: PASS esp32
+
+OK. Waiting for commands.
+
+request: PWD
+
+request: TYPE I
+
+request: PASV
+
+Connection management set to passive
+
+Data port set to 50009
+
+request: LIST
+
+ftpdataserver client....
+
+File Name = System Volume Information
+
+File Name = md5.v
+
+File Name = md5.coe
+
+File Name = overlay
+
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+
+File Name = A04_AES��MD5��CRCУ��_2018112800_����B.docx
+
+File Name = board_config.ini
+
+File Name = ����-201811200����B-��������Ƶ.zip
+
+client disconnected
+
+Ftp server waiting for connection on port 21
+
+Client connected!
+
+request: USER esp32

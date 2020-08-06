@@ -1,12 +1,10 @@
-from django.shortcuts import render
-from django.http import JsonResponse, StreamingHttpResponse, HttpResponse
+from django.http import HttpResponse
 from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny
-from rest_framework.parsers import *
+from rest_framework.parsers import JSONParser
 import numpy as np
 from PIL import Image, ImageDraw, ImageFont
 from datetime import datetime
-from base64 import b64encode
+
 
 text_test = '''
     |--bowerrc
@@ -61,6 +59,8 @@ class TestView(APIView):
     _indent = ["    ", "|   ", "|-- "]
 
     def post(self, request, *args, **kwargs):
+        begin = datetime.now()
+
         width = 720  # 图片宽度
         height = 1280  # 图片高度
         font_size = 16  # 字号
@@ -84,7 +84,8 @@ class TestView(APIView):
         img = Image.new('1', (width, height), 0)
         # img.show()
         draw = ImageDraw.Draw(img)
-        font = ImageFont.truetype(r"C:\Windows\Fonts\Consolas\consola.ttf", font_size)
+        font = ImageFont.truetype(
+            r"C:\Windows\Fonts\Consolas\consola.ttf", font_size)
         # draw.multiline_text((0, 0), text_test, fill=1, font=font)
         draw.multiline_text(origin, text, fill=1, font=font)
         # print(np.size(img))
@@ -95,9 +96,12 @@ class TestView(APIView):
         print(len(response_str))
         # response["img"] = response_str
 
-        response = HttpResponse(response_str, content_type="application/octet-stream")
+        response = HttpResponse(
+            response_str, content_type="application/octet-stream")
         response["width"] = width
         response["height"] = height
+
+        print(datetime.now() - begin)
         return response
 
     def _fileOperation(self, client, operation):
@@ -136,8 +140,10 @@ class TestView(APIView):
                 operation_str += " DIR"
             elif operation["type"] % 10 == 2:  # 文件
                 operation_str += " FILE"
-            operation_str += "\n    Original Path: " + operation["original_path"]
-            operation_str += "\n    Modified Path: " + operation["modified_path"] + '\n\n'
+            operation_str += "\n    Original Path: " + \
+                operation["original_path"]
+            operation_str += "\n    Modified Path: " + \
+                operation["modified_path"] + '\n\n'
 
         return operation_str
 
@@ -159,9 +165,11 @@ class TestView(APIView):
             for i, item in enumerate(root[index].items()):
                 root_str += string_prefix + self._indent[2] + item[0] + '\n'
                 if i < length:
-                    root_str += self._generateFolderStr(item[1], string_prefix + self._indent[1])
+                    root_str += self._generateFolderStr(
+                        item[1], string_prefix + self._indent[1])
                 else:
-                    root_str += self._generateFolderStr(item[1], string_prefix + self._indent[0])
+                    root_str += self._generateFolderStr(
+                        item[1], string_prefix + self._indent[0])
         return root_str
 
     def _generateFolderStr(self, folder, string_prefix):
@@ -183,9 +191,11 @@ class TestView(APIView):
             for i, item in enumerate(folder[index].items()):
                 folder_str += string_prefix + self._indent[2] + item[0] + '\n'
                 if i < length:
-                    folder_str += self._generateFolderStr(item[1], string_prefix + self._indent[1])
+                    folder_str += self._generateFolderStr(
+                        item[1], string_prefix + self._indent[1])
                 else:
-                    folder_str += self._generateFolderStr(item[1], string_prefix + self._indent[0])
+                    folder_str += self._generateFolderStr(
+                        item[1], string_prefix + self._indent[0])
         return folder_str
 
     def _numpyBool2Str(self, arr):

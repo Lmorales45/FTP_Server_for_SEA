@@ -1,0 +1,125 @@
+Client connected!
+request: USER esp32
+request: PASS esp32
+OK. Waiting for commands.
+request: SYST
+request: FEAT
+request: PWD
+request: TYPE I
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: LIST
+ftpdataserver client....
+File Name = System Volume Information
+File Name = overlay
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+File Name = A04_AES��MD5��CRCУ��_2018112800_����B.docx
+File Name = board_config.ini
+File Name = ����-201811200����B-��������Ƶ.zip
+client disconnected
+Ftp server waiting for connection on port 21
+Client connected!
+request: USER esp32
+request: PASS esp32
+OK. Waiting for commands.
+request: CWD /
+request: PWD
+request: TYPE I
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: STOR MD5_EECE.zip
+ftpdataserver client....
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: LIST
+ftpdataserver client....
+File Name = System Volume Information
+File Name = MD5_EECE.zip
+File Name = overlay
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+File Name = A04_AES��MD5��CRCУ��_2018112800_����B.docx
+File Name = board_config.ini
+File Name = ����-201811200����B-��������Ƶ.zip
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: RETR board_config.ini
+ftpdataserver client....
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: RETR ����-201811200����B-��������Ƶ.zip
+ftpdataserver client....
+ets Jun  8 2016 00:22:57
+
+rst:0x1 (POWERON_RESET),boot:0x13 (SPI_FAST_FLASH_BOOT)
+configsip: 0, SPIWP:0xee
+clk_drv:0x00,q_drv:0x00,d_drv:0x00,cs0_drv:0x00,hd_drv:0x00,wp_drv:0x00
+mode:DIO, clock div:1
+load:0x3fff0018,len:4
+load:0x3fff001c,len:1216
+ho 0 tail 12 room 4
+load:0x40078000,len:9720
+ho 0 tail 12 room 4
+load:0x40080400,len:6352
+entry 0x400806b8
+
+.
+Connected to TP-LINK_6C75
+IP address: 192.168.1.103
+SD opened!
+Ftp server waiting for connection on port 21
+Client connected!
+request: USER esp32
+request: PASS esp32
+OK. Waiting for commands.
+request: CWD /
+request: RNFR MD5_EECE.zip
+Renaming /MD5_EECE.zip
+request: RNTO 123.zip
+request: RNFR 123.zip
+Renaming /123.zip
+request: RNTO /overlay/123.zip
+request: TYPE I
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: LIST
+ftpdataserver client....
+File Name = System Volume Information
+File Name = overlay
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+File Name = A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+File Name = A04_AES��MD5��CRCУ��_2018112800_����B.docx
+File Name = board_config.ini
+File Name = ����-201811200����B-��������Ƶ.zip
+request: CWD overlay
+request: PWD
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: LIST
+ftpdataserver client....
+File Name = 123.ZIP
+File Name = a.bit
+request: CDUP
+request: PWD
+request: DELE A07_�����Ǳ�-����ʾ����_2018112777_��ѩ.docx
+request: PASV
+Connection management set to passive
+Data port set to 50009
+request: LIST
+ftpdataserver client....
+File Name = System Volume Information
+File Name = overlay
+File Name = 2020������ѧУ�ճ̰���_A��_20200719.pdf
+File Name = A04_AES��MD5��CRCУ��_2018112800_����B.docx
+File Name = board_config.ini
+File Name = ����-201811200����B-��������Ƶ.zip
+client disconnected
+Ftp server waiting for connection on port 21

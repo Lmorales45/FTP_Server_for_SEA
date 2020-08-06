@@ -47,6 +47,7 @@
 * [sea_esp32_qspi](https://github.com/CutClassH/sea_esp32_qspi)
 * [Arduino core for the ESP32](https://github.com/espressif/arduino-esp32)
 * [ArduinoJson](https://github.com/bblanchon/ArduinoJson)
+* [SEA-FPGA-IP](https://github.com/DoneSEA/SEA/tree/master/Examples/FPGA-IP)
 
 ## 项目系统框图
 
@@ -58,7 +59,7 @@
 
 ## 板卡型号
 
-### Spartan Edge Accelerator Board v1.0 &nbsp; \[[详情](https://wiki.seeedstudio.com/cn/Spartan-Edge-Accelerator-Board/)]  \[[示例](hhttps://github.com/DoneSEA/SEA)]
+### Spartan Edge Accelerator Board v1.0 &nbsp; \[[详情](https://wiki.seeedstudio.com/cn/Spartan-Edge-Accelerator-Board/)]  \[[示例](https://github.com/DoneSEA/SEA)]
 
 > #### FPGA 	
 > 
@@ -126,7 +127,12 @@
 | \|-- images                                                             | 项目图片                  |
 | &nbsp;&emsp; \|-- 技术路线.png                                          | 技术路线                  |
 | &nbsp;&emsp; \|-- 屏幕显示.jpg                                          | 屏幕显示                  |
-| &nbsp;&emsp; \|-- 文件目录序列化.png                                    | 技术路线                  |
+| &nbsp;&emsp; \|-- 文件目录序列化.png                                    | 文件目录序列化            |
+| &nbsp;&emsp; \|-- 文件删除.png                                          | 文件删除                  |
+| &nbsp;&emsp; \|-- 文件上传.png                                          | 文件上传                  |
+| &nbsp;&emsp; \|-- 文件下载.png                                          | 文件下载                  |
+| &nbsp;&emsp; \|-- 文件移动.png                                          | 文件移动                  |
+| &nbsp;&emsp; \|-- 文件重命名.png                                        | 文件重命名                |
 | &nbsp;&emsp; \|-- 系统框图.png                                          | 系统框图                  |
 | \|-- ExecutableFiles                                                    | 项目可执行文件            |
 | &nbsp;&emsp; \|-- EFIT.bit                                              | FPGA接收并显示图片        |
@@ -136,6 +142,7 @@
 | &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test.ino | FTP服务器项目文件         |
 | &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.cpp          | FTP服务器源文件           |
 | &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.h            | FTP服务器头文件           |
+| &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- log                         | FTP服务器测试日志信息     |
 | &nbsp;&emsp; \|-- lower_computer                                        | 下位机                    |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- .clang-format                            | 代码格式规范              |
 | &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32_FTPServer_SD_test                  | FTP服务器测试项目         |
@@ -161,7 +168,59 @@
 | &nbsp;&emsp; &nbsp;&emsp; \|-- upper_computer                           | Django 项目管理App        |
 
 
+## FTP服务器指令及响应码
+
+请求指令|功能|请求参数|响应码
+-|-|-|-
+USER|用户|服务用户名|331: 用户名验证成功<br>500: 为验证用户, 其他指令无效<br>530: 用户名无效
+PASS|密码|服务密码|230: 密码验证成功<br>500: 未验证密码, 其他指令无效<br>530: 密码无效
+CDUP|回到上一层目录|无|250: 成功/失败返回根目录
+CWD|改变工作目录|新的工作目录路径|250: 成功<br>550: 参数长度过长<br>501: 参数不存在<br>550: 目标无法访问
+PWD|返回当前工作目录|无|257: 当前目录
+QUIT|退出登录|无|221: 关闭控制连接
+MODE|传输模式|S/B/C (仅支持’S’流传输)|200: 传输模式受支持<br>504: 传输模式不支持
+PASV|被动接收请求|无|227: 进入被动模式
+PORT|数据端口|客户端IP与端口|200: 数据连接成功建立<br>501: 无法解析请求参数
+STRU|文件结构设置|F/R/P (仅支持’F’文件)|200: 文件结构受支持<br>504: 文件结构不支持
+TYPE|表示类型|A/E/I (支持’A’ASCII与’I’Image)|200: 数据传输类型受支持<br>504: 数据传输类型不支持
+ABOR|终止动作|无|226: 数据连接已关闭<br>426: 数据传输中止
+DELE|删除|目标路径|250: 删除目标成功<br>450: 删除目标失败<br>500: 参数长度过长<br>501: 参数不存在<br>550: 目标无法访问
+LIST|获取文件列表|无|150: 数据连接已建立<br>226: 数据传输完成<br>425: 数据连接无法建立<br>550: 目标无法访问
+MLSD|获取文件信息列表|无|150: 数据连接已建立<br>226: 数据传输完成<br>425: 数据连接无法建立<br>550: 目标无法访问
+NLST|获取目录列表|无|150: 数据连接已建立<br>226: 数据传输完成<br>425: 数据连接无法建立<br>550: 目标无法访问
+NOOP|等待|无|200: 接收到请求
+RETR|获得文件|目标路径|150: 数据连接已建立<br>226: 数据传输完成<br>425: 数据连接无法建立<br>450: 文件打开失败<br>500: 参数长度过长<br>501: 参数不存在<br>550: 目标无法访问
+STOR|保存文件|目标路径|150: 数据连接已建立<br>226: 数据传输完成<br>425: 数据连接无法建立<br>451: 文件打开失败<br>500: 参数长度过长<br>501: 参数不存在
+MKD|创建目录|目标路径|257: 目录创建成功<br>500: 参数长度过长<br>501: 参数不存在<br>521: 目标已存在<br>550: 目录创建失败
+RMD|删除目录|目标路径|250: 目录删除成功<br>500: 参数长度过长<br>501: 参数不存在<br>550: 目录删除失败
+RNFR|重命名/移动|目标路径|350: 重命名/移动已准备好<br>500: 参数长度过长<br>501: 参数不存在<br>550: 目标无法访问
+RNTO|重命名为/移动至|目标路径|250: 重命名/移动成功<br>451: 重命名/移动文件失败<br>500: 参数长度过长<br>501: 参数不存在<br>553: 目标已存在
+FEAT|获取高级功能支持|无|211: 系统答复
+MDTM <br>(未实现)|获取文件修改时间|无|550: 未执行操作(功能未实现)
+SIZE|获取文件大小|目标路径|213: 文件成功访问<br>450: 文件打开失败<br>500: 参数长度过长<br>501: 参数不存在
+
+
 ## 作品照片
+
+### 文件上传
+
+![文件上传](images/文件上传.png)
+
+### 文件下载
+
+![文件下载](images/文件下载.png)
+
+### 文件重命名
+
+![文件重命名](images/文件重命名.png)
+
+### 文件移动
+
+![文件移动](images/文件移动.png)
+
+### 文件删除
+
+![文件删除](images/文件删除.png)
 
 ### 文件目录序列化
 
