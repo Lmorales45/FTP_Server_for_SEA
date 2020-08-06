@@ -2,28 +2,28 @@
 # Vivado v2018.3 (64-bit)
 # SW Build 2405991 on Thu Dec  6 23:38:27 MST 2018
 # IP Build 2404404 on Fri Dec  7 01:43:56 MST 2018
-# Start of session at: Wed Aug  5 15:47:56 2020
-# Process ID: 9032
+# Start of session at: Thu Aug  6 16:58:34 2020
+# Process ID: 20084
 # Current directory: E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1
 # Command line: vivado.exe -log EFIT.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source EFIT.tcl
 # Log file: E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/EFIT.vds
 # Journal file: E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1\vivado.jou
 #-----------------------------------------------------------
 source EFIT.tcl -notrace
-create_project: Time (s): cpu = 00:00:06 ; elapsed = 00:00:09 . Memory (MB): peak = 319.121 ; gain = 69.609
+create_project: Time (s): cpu = 00:00:04 ; elapsed = 00:00:06 . Memory (MB): peak = 319.094 ; gain = 70.586
 INFO: [IP_Flow 19-234] Refreshing IP repositories
 INFO: [IP_Flow 19-1700] Loaded user IP repository 'e:/SEA/SEA-Tutorial/Experiment-of-SEA/IP_Core/HDMI-IP'.
 INFO: [IP_Flow 19-1700] Loaded user IP repository 'e:/SEA/SEA-Tutorial/Experiment-of-SEA/IP_Core/Frequency-Divider-IP'.
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'E:/Vivado18.3/Xilinx18.3/Vivado/2018.3/data/ip'.
-update_ip_catalog: Time (s): cpu = 00:00:14 ; elapsed = 00:00:15 . Memory (MB): peak = 351.156 ; gain = 32.035
+update_ip_catalog: Time (s): cpu = 00:00:07 ; elapsed = 00:00:08 . Memory (MB): peak = 350.813 ; gain = 31.719
 Command: synth_design -top EFIT -part xc7s15ftgb196-1
 Starting synth_design
 Attempting to get a license for feature 'Synthesis' and/or device 'xc7s15'
 INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7s15'
 INFO: Launching helper process for spawning children vivado processes
-INFO: Helper process launched with PID 19260 
+INFO: Helper process launched with PID 18240 
 ---------------------------------------------------------------------------------
-Starting RTL Elaboration : Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 472.066 ; gain = 105.645
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 471.781 ; gain = 105.016
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-6157] synthesizing module 'EFIT' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:23]
 INFO: [Synth 8-6157] synthesizing module 'qspi_slave' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/qspi_slave.v:23]
@@ -32,32 +32,26 @@ INFO: [Synth 8-6157] synthesizing module 'qspi_slave' [E:/Vivado18.3/programs/ET
 	Parameter dummy bound to: 4 - type: integer 
 	Parameter INS_QWrite_Quad bound to: 8'b00110010 
 	Parameter INS_FRead_Quad bound to: 8'b01101011 
-WARNING: [Synth 8-3936] Found unconnected internal register 'temp_data_reg' and it is trimmed from '8' to '4' bits. [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/qspi_slave.v:94]
+WARNING: [Synth 8-6014] Unused sequential element R_o_valid_reg was removed.  [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/qspi_slave.v:183]
+WARNING: [Synth 8-3936] Found unconnected internal register 'temp_data_reg' and it is trimmed from '8' to '4' bits. [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/qspi_slave.v:80]
 INFO: [Synth 8-6155] done synthesizing module 'qspi_slave' (1#1) [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/qspi_slave.v:23]
-INFO: [Synth 8-6157] synthesizing module 'blk_mem_gen_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/blk_mem_gen_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'blk_mem_gen_0' (2#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/blk_mem_gen_0_stub.v:6]
-WARNING: [Synth 8-689] width (32) of port connection 'addra' does not match port width (15) of module 'blk_mem_gen_0' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:93]
-WARNING: [Synth 8-689] width (32) of port connection 'addrb' does not match port width (15) of module 'blk_mem_gen_0' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:96]
+INFO: [Synth 8-6157] synthesizing module 'blk_mem_gen_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/blk_mem_gen_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'blk_mem_gen_0' (2#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/blk_mem_gen_0_stub.v:6]
 INFO: [Synth 8-6157] synthesizing module 'get_data_from_esp32' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/get_data_from_esp32.v:23]
 	Parameter addr_width bound to: 15 - type: integer 
 WARNING: [Synth 8-6090] variable 'i' is written by both blocking and non-blocking assignments, entire logic could be removed [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/get_data_from_esp32.v:50]
 WARNING: [Synth 8-6090] variable 'i' is written by both blocking and non-blocking assignments, entire logic could be removed [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/get_data_from_esp32.v:75]
 WARNING: [Synth 8-5788] Register data_out_reg in module get_data_from_esp32 is has both Set and reset with same priority. This may cause simulation mismatches. Consider rewriting code  [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/get_data_from_esp32.v:123]
 INFO: [Synth 8-6155] done synthesizing module 'get_data_from_esp32' (3#1) [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/get_data_from_esp32.v:23]
-WARNING: [Synth 8-689] width (32) of port connection 'addr' does not match port width (15) of module 'get_data_from_esp32' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:104]
-WARNING: [Synth 8-689] width (8) of port connection 'data_out' does not match port width (24) of module 'get_data_from_esp32' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:106]
-WARNING: [Synth 8-689] width (12) of port connection 'Set_X' does not match port width (1) of module 'get_data_from_esp32' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:107]
-WARNING: [Synth 8-689] width (12) of port connection 'Set_Y' does not match port width (1) of module 'get_data_from_esp32' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:108]
-INFO: [Synth 8-6157] synthesizing module 'rgb2dvi_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/rgb2dvi_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'rgb2dvi_0' (4#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/rgb2dvi_0_stub.v:6]
-INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/clk_wiz_0_stub.v:5]
-INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (5#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/clk_wiz_0_stub.v:5]
-WARNING: [Synth 8-350] instance 'clk_10' of module 'clk_wiz_0' requires 3 connections, but only 2 given [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:126]
-INFO: [Synth 8-6157] synthesizing module 'Driver_HDMI_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/Driver_HDMI_0_stub.v:6]
-INFO: [Synth 8-6155] done synthesizing module 'Driver_HDMI_0' (6#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-9032-ThinkPad/realtime/Driver_HDMI_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'rgb2dvi_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/rgb2dvi_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'rgb2dvi_0' (4#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/rgb2dvi_0_stub.v:6]
+INFO: [Synth 8-6157] synthesizing module 'clk_wiz_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/clk_wiz_0_stub.v:5]
+INFO: [Synth 8-6155] done synthesizing module 'clk_wiz_0' (5#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/clk_wiz_0_stub.v:5]
+INFO: [Synth 8-6157] synthesizing module 'Driver_HDMI_0' [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/Driver_HDMI_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'Driver_HDMI_0' (6#1) [E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/.Xil/Vivado-20084-ThinkPad/realtime/Driver_HDMI_0_stub.v:6]
 INFO: [Synth 8-6155] done synthesizing module 'EFIT' (7#1) [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:23]
 ---------------------------------------------------------------------------------
-Finished RTL Elaboration : Time (s): cpu = 00:00:15 ; elapsed = 00:00:16 . Memory (MB): peak = 527.922 ; gain = 161.500
+Finished RTL Elaboration : Time (s): cpu = 00:00:09 ; elapsed = 00:00:09 . Memory (MB): peak = 527.418 ; gain = 160.652
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -70,10 +64,10 @@ Report Check Netlist:
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 527.922 ; gain = 161.500
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 527.418 ; gain = 160.652
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 527.922 ; gain = 161.500
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:09 ; elapsed = 00:00:10 . Memory (MB): peak = 527.418 ; gain = 160.652
 ---------------------------------------------------------------------------------
 INFO: [Device 21-403] Loading part xc7s15ftgb196-1
 INFO: [Project 1-570] Preparing netlist for logic optimization
@@ -94,25 +88,25 @@ Finished Parsing XDC File [E:/Vivado18.3/programs/ETIF/ETIF.srcs/constrs_1/new/s
 WARNING: [Project 1-498] One or more constraints failed evaluation while reading constraint file [E:/Vivado18.3/programs/ETIF/ETIF.srcs/constrs_1/new/system.xdc] and the design contains unresolved black boxes. These constraints will be read post-synthesis (as long as their source constraint file is marked as used_in_implementation) and should be applied correctly then. You should review the constraints listed in the file [.Xil/EFIT_propImpl.xdc] and check the run log file to verify that these constraints were correctly applied.
 INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [E:/Vivado18.3/programs/ETIF/ETIF.srcs/constrs_1/new/system.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/EFIT_propImpl.xdc].
 Resolution: To avoid this warning, move constraints listed in [.Xil/EFIT_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 832.809 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 831.484 ; gain = 0.000
 Completed Processing XDC Constraints
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 832.809 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 831.484 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 832.809 ; gain = 0.000
-Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.019 . Memory (MB): peak = 832.809 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 831.484 ; gain = 0.000
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.012 . Memory (MB): peak = 831.484 ; gain = 0.000
 WARNING: [Timing 38-316] Clock period '20.000' specified during out-of-context synthesis of instance 'u_blk_mem_gen_0' at clock pin 'clkb' is different from the actual clock period '6.734', this can lead to different synthesis results.
 ---------------------------------------------------------------------------------
-Finished Constraint Validation : Time (s): cpu = 00:00:47 ; elapsed = 00:00:52 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished Constraint Validation : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Loading Part and Timing Information
 ---------------------------------------------------------------------------------
 Loading part: xc7s15ftgb196-1
 ---------------------------------------------------------------------------------
-Finished Loading Part and Timing Information : Time (s): cpu = 00:00:47 ; elapsed = 00:00:52 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Applying 'set_property' XDC Constraints
@@ -140,7 +134,7 @@ Applied set_property DONT_TOUCH = true for u_blk_mem_gen_0. (constraint file  au
 Applied set_property DONT_TOUCH = true for rgb2dvi. (constraint file  auto generated constraint, line ).
 Applied set_property DONT_TOUCH = true for clk_10. (constraint file  auto generated constraint, line ).
 ---------------------------------------------------------------------------------
-Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:47 ; elapsed = 00:00:52 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:26 ; elapsed = 00:00:28 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 INFO: [Synth 8-5546] ROM "R_RAM_en" won't be mapped to RAM because it is too sparse
 INFO: [Synth 8-5545] ROM "mem_Img_format_reg[0]" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
@@ -154,7 +148,7 @@ INFO: [Synth 8-5545] ROM "mem_Img_format_reg[7]" won't be mapped to RAM because 
 INFO: [Synth 8-5545] ROM "addr" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "temp" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 ---------------------------------------------------------------------------------
-Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:49 ; elapsed = 00:00:54 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:27 ; elapsed = 00:00:29 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -175,14 +169,14 @@ Detailed RTL Component Info :
 	               24 Bit    Registers := 1     
 	                8 Bit    Registers := 11    
 	                4 Bit    Registers := 1     
-	                1 Bit    Registers := 4     
+	                1 Bit    Registers := 3     
 +---Muxes : 
-	   2 Input     32 Bit        Muxes := 7     
-	   2 Input     24 Bit        Muxes := 6     
+	   2 Input     32 Bit        Muxes := 9     
+	   2 Input     24 Bit        Muxes := 5     
 	   2 Input      8 Bit        Muxes := 3     
 	   3 Input      8 Bit        Muxes := 1     
 	   2 Input      5 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 25    
+	   2 Input      1 Bit        Muxes := 28    
 	   3 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Component Statistics 
@@ -201,7 +195,7 @@ Detailed RTL Component Info :
 	               32 Bit    Registers := 2     
 	                8 Bit    Registers := 3     
 	                4 Bit    Registers := 1     
-	                1 Bit    Registers := 4     
+	                1 Bit    Registers := 3     
 +---Muxes : 
 	   2 Input      8 Bit        Muxes := 3     
 	   3 Input      8 Bit        Muxes := 1     
@@ -215,10 +209,10 @@ Detailed RTL Component Info :
 	               24 Bit    Registers := 1     
 	                8 Bit    Registers := 8     
 +---Muxes : 
-	   2 Input     32 Bit        Muxes := 7     
-	   2 Input     24 Bit        Muxes := 6     
+	   2 Input     32 Bit        Muxes := 9     
+	   2 Input     24 Bit        Muxes := 5     
 	   2 Input      5 Bit        Muxes := 1     
-	   2 Input      1 Bit        Muxes := 22    
+	   2 Input      1 Bit        Muxes := 25    
 	   3 Input      1 Bit        Muxes := 1     
 ---------------------------------------------------------------------------------
 Finished RTL Hierarchical Component Statistics
@@ -246,15 +240,31 @@ INFO: [Synth 8-5545] ROM "get_data_from_esp32_0/mem_Img_format_reg[6]" won't be 
 INFO: [Synth 8-5545] ROM "get_data_from_esp32_0/mem_Img_format_reg[5]" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "get_data_from_esp32_0/mem_Img_format_reg[4]" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
 INFO: [Synth 8-5545] ROM "get_data_from_esp32_0/addr" won't be mapped to RAM because address size (32) is larger than maximum supported(25)
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[0]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[1]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[2]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[3]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[4]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[5]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
-INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[6]' (FDE) to 'get_data_from_esp32_0/data_out_reg[7]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[0]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[1]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[2]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[3]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[4]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[5]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[6]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[7]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[8]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[9]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[10]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[11]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[12]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[13]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[14]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[15]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[16]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[17]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[18]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[19]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[20]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[21]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
+INFO: [Synth 8-3886] merging instance 'get_data_from_esp32_0/data_out_reg[22]' (FDE) to 'get_data_from_esp32_0/data_out_reg[23]'
 ---------------------------------------------------------------------------------
-Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:01:02 ; elapsed = 00:01:07 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:34 ; elapsed = 00:00:37 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -268,13 +278,13 @@ Start Applying XDC Timing Constraints
 INFO: [Synth 8-5578] Moved timing constraint from pin 'clk_10/clk_out1' to pin 'clk_10/bbstub_clk_out1/O'
 INFO: [Synth 8-5819] Moved 1 constraints on hierarchical pins to their respective driving/loading pins
 ---------------------------------------------------------------------------------
-Finished Applying XDC Timing Constraints : Time (s): cpu = 00:01:40 ; elapsed = 00:01:46 . Memory (MB): peak = 832.809 ; gain = 466.387
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:52 ; elapsed = 00:00:55 . Memory (MB): peak = 831.484 ; gain = 464.719
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Timing Optimization
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Timing Optimization : Time (s): cpu = 00:01:47 ; elapsed = 00:01:53 . Memory (MB): peak = 863.449 ; gain = 497.027
+Finished Timing Optimization : Time (s): cpu = 00:00:57 ; elapsed = 00:01:01 . Memory (MB): peak = 883.426 ; gain = 516.660
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -286,7 +296,7 @@ Report RTL Partitions:
 Start Technology Mapping
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Technology Mapping : Time (s): cpu = 00:01:48 ; elapsed = 00:01:55 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Technology Mapping : Time (s): cpu = 00:00:58 ; elapsed = 00:01:01 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -309,9 +319,8 @@ Start Final Netlist Cleanup
 ---------------------------------------------------------------------------------
 Finished Final Netlist Cleanup
 ---------------------------------------------------------------------------------
-CRITICAL WARNING: [Synth 8-4442] BlackBox module clk_10 has unconnected pin resetn
 ---------------------------------------------------------------------------------
-Finished IO Insertion : Time (s): cpu = 00:01:53 ; elapsed = 00:02:00 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished IO Insertion : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 
 Report Check Netlist: 
@@ -324,7 +333,7 @@ Report Check Netlist:
 Start Renaming Generated Instances
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Instances : Time (s): cpu = 00:01:53 ; elapsed = 00:02:00 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Renaming Generated Instances : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 
 Report RTL Partitions: 
@@ -336,25 +345,25 @@ Report RTL Partitions:
 Start Rebuilding User Hierarchy
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Ports
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Ports : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Renaming Generated Ports : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Handling Custom Attributes
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Handling Custom Attributes : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Handling Custom Attributes : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Renaming Generated Nets
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
-Finished Renaming Generated Nets : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Renaming Generated Nets : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 Start Writing Synthesis Report
@@ -380,47 +389,48 @@ Report Cell Usage:
 |4     |rgb2dvi_0     |     1|
 |5     |BUFG          |     1|
 |6     |CARRY4        |    80|
-|7     |LUT1          |    69|
-|8     |LUT2          |   219|
-|9     |LUT3          |   106|
-|10    |LUT4          |   109|
-|11    |LUT5          |    38|
-|12    |LUT6          |    45|
-|13    |FDCE          |   256|
-|14    |FDRE          |     6|
-|15    |IBUF          |     7|
+|7     |LUT1          |    70|
+|8     |LUT2          |   217|
+|9     |LUT3          |    85|
+|10    |LUT4          |    73|
+|11    |LUT5          |    90|
+|12    |LUT6          |    33|
+|13    |MUXF7         |     1|
+|14    |FDCE          |   255|
+|15    |FDRE          |     6|
+|16    |IBUF          |     7|
 +------+--------------+------+
 
 Report Instance Areas: 
 +------+------------------------+--------------------+------+
 |      |Instance                |Module              |Cells |
 +------+------------------------+--------------------+------+
-|1     |top                     |                    |  1004|
-|2     |  get_data_from_esp32_0 |get_data_from_esp32 |   742|
-|3     |  u_qspi_slave          |qspi_slave          |   186|
+|1     |top                     |                    |   986|
+|2     |  get_data_from_esp32_0 |get_data_from_esp32 |   726|
+|3     |  u_qspi_slave          |qspi_slave          |   184|
 +------+------------------------+--------------------+------+
 ---------------------------------------------------------------------------------
-Finished Writing Synthesis Report : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Finished Writing Synthesis Report : Time (s): cpu = 00:01:01 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 ---------------------------------------------------------------------------------
-Synthesis finished with 0 errors, 1 critical warnings and 0 warnings.
-Synthesis Optimization Runtime : Time (s): cpu = 00:01:18 ; elapsed = 00:01:38 . Memory (MB): peak = 872.813 ; gain = 201.504
-Synthesis Optimization Complete : Time (s): cpu = 00:01:54 ; elapsed = 00:02:01 . Memory (MB): peak = 872.813 ; gain = 506.391
+Synthesis finished with 0 errors, 0 critical warnings and 0 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:43 ; elapsed = 00:00:53 . Memory (MB): peak = 884.934 ; gain = 214.102
+Synthesis Optimization Complete : Time (s): cpu = 00:01:02 ; elapsed = 00:01:05 . Memory (MB): peak = 884.934 ; gain = 518.168
 INFO: [Project 1-571] Translating synthesized netlist
-INFO: [Netlist 29-17] Analyzing 80 Unisim elements for replacement
+INFO: [Netlist 29-17] Analyzing 81 Unisim elements for replacement
 INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
 INFO: [Project 1-570] Preparing netlist for logic optimization
 INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 872.813 ; gain = 0.000
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.001 . Memory (MB): peak = 884.934 ; gain = 0.000
 INFO: [Project 1-111] Unisim Transformation Summary:
 No Unisim elements were transformed.
 
 INFO: [Common 17-83] Releasing license: Synthesis
-60 Infos, 14 Warnings, 1 Critical Warnings and 0 Errors encountered.
+76 Infos, 8 Warnings, 0 Critical Warnings and 0 Errors encountered.
 synth_design completed successfully
-synth_design: Time (s): cpu = 00:02:02 ; elapsed = 00:02:09 . Memory (MB): peak = 872.813 ; gain = 518.422
-Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.002 . Memory (MB): peak = 872.813 ; gain = 0.000
+synth_design: Time (s): cpu = 00:01:06 ; elapsed = 00:01:10 . Memory (MB): peak = 884.934 ; gain = 530.594
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 884.934 ; gain = 0.000
 WARNING: [Constraints 18-5210] No constraints selected for write.
 Resolution: This message can indicate that there are no constraints for the design, or it can indicate that the used_in flags are set such that the constraints are ignored. This later case is used when running synth_design to not write synthesis constraints to the resulting checkpoint. Instead, project constraints are read when the synthesized design is opened.
 INFO: [Common 17-1381] The checkpoint 'E:/Vivado18.3/programs/ETIF/ETIF.runs/synth_1/EFIT.dcp' has been generated.
 INFO: [runtcl-4] Executing : report_utilization -file EFIT_utilization_synth.rpt -pb EFIT_utilization_synth.pb
-INFO: [Common 17-206] Exiting Vivado at Wed Aug  5 15:50:49 2020...
+INFO: [Common 17-206] Exiting Vivado at Thu Aug  6 17:00:08 2020...

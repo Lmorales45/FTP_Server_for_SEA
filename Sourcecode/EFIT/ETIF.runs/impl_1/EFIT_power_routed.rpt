@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 ----------------------------------------------------------------------------------------------------------------------------------
 | Tool Version     : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date             : Wed Aug  5 16:01:41 2020
+| Date             : Thu Aug  6 17:03:30 2020
 | Host             : ThinkPad running 64-bit major release  (build 9200)
 | Command          : report_power -file EFIT_power_routed.rpt -pb EFIT_power_summary_routed.pb -rpx EFIT_power_routed.rpx
 | Design           : EFIT
@@ -30,14 +30,14 @@ Table of Contents
 ----------
 
 +--------------------------+--------------+
-| Total On-Chip Power (W)  | 0.315        |
+| Total On-Chip Power (W)  | 0.434        |
 | Design Power Budget (W)  | Unspecified* |
 | Power Budget Margin (W)  | NA           |
-| Dynamic (W)              | 0.295        |
+| Dynamic (W)              | 0.414        |
 | Device Static (W)        | 0.020        |
 | Effective TJA (C/W)      | 3.4          |
-| Max Ambient (C)          | 83.9         |
-| Junction Temperature (C) | 26.1         |
+| Max Ambient (C)          | 83.5         |
+| Junction Temperature (C) | 26.5         |
 | Confidence Level         | Low          |
 | Setting File             | ---          |
 | Simulation Activity File | ---          |
@@ -52,21 +52,21 @@ Table of Contents
 +----------------+-----------+----------+-----------+-----------------+
 | On-Chip        | Power (W) | Used     | Available | Utilization (%) |
 +----------------+-----------+----------+-----------+-----------------+
-| Clocks         |     0.008 |       15 |       --- |             --- |
-| Slice Logic    |     0.002 |     1375 |       --- |             --- |
-|   LUT as Logic |     0.002 |      675 |      8000 |            8.44 |
-|   CARRY4       |    <0.001 |       99 |      2000 |            4.95 |
-|   Register     |    <0.001 |      386 |     16000 |            2.41 |
+| Clocks         |     0.009 |       15 |       --- |             --- |
+| Slice Logic    |     0.003 |     1511 |       --- |             --- |
+|   LUT as Logic |     0.003 |      707 |      8000 |            8.84 |
+|   CARRY4       |    <0.001 |      104 |      2000 |            5.20 |
+|   Register     |    <0.001 |      453 |     16000 |            2.83 |
 |   BUFG         |    <0.001 |        1 |        16 |            6.25 |
-|   F7/F8 Muxes  |    <0.001 |        8 |      8000 |            0.10 |
-|   Others       |     0.000 |       69 |       --- |             --- |
-| Signals        |     0.003 |     1035 |       --- |             --- |
+|   F7/F8 Muxes  |    <0.001 |        9 |      8000 |            0.11 |
+|   Others       |     0.000 |       68 |       --- |             --- |
+| Signals        |     0.003 |     1099 |       --- |             --- |
 | Block RAM      |     0.003 |        8 |        10 |           80.00 |
-| MMCM           |     0.000 |        1 |         2 |           50.00 |
+| MMCM           |     0.117 |        1 |         2 |           50.00 |
 | PLL            |     0.137 |        1 |         2 |           50.00 |
 | I/O            |     0.142 |       16 |       100 |           16.00 |
 | Static Power   |     0.020 |          |           |                 |
-| Total          |     0.315 |          |           |                 |
+| Total          |     0.434 |          |           |                 |
 +----------------+-----------+----------+-----------+-----------------+
 
 
@@ -76,8 +76,8 @@ Table of Contents
 +-----------+-------------+-----------+-------------+------------+
 | Source    | Voltage (V) | Total (A) | Dynamic (A) | Static (A) |
 +-----------+-------------+-----------+-------------+------------+
-| Vccint    |       1.000 |     0.037 |       0.034 |      0.004 |
-| Vccaux    |       1.800 |     0.076 |       0.069 |      0.007 |
+| Vccint    |       1.000 |     0.040 |       0.036 |      0.004 |
+| Vccaux    |       1.800 |     0.140 |       0.133 |      0.007 |
 | Vcco33    |       3.300 |     0.043 |       0.042 |      0.001 |
 | Vcco25    |       2.500 |     0.000 |       0.000 |      0.000 |
 | Vcco18    |       1.800 |     0.000 |       0.000 |      0.000 |
@@ -154,18 +154,22 @@ Table of Contents
 +--------------------------------------+-----------+
 | Name                                 | Power (W) |
 +--------------------------------------+-----------+
-| EFIT                                 |     0.295 |
+| EFIT                                 |     0.414 |
+|   Driver_HDMI0                       |     0.001 |
+|     inst                             |     0.001 |
+|   clk_10                             |     0.117 |
+|     inst                             |     0.117 |
 |   get_data_from_esp32_0              |     0.003 |
-|   rgb2dvi                            |     0.284 |
-|     U0                               |     0.284 |
+|   rgb2dvi                            |     0.285 |
+|     U0                               |     0.285 |
 |       ClockGenInternal.ClockGenX     |     0.137 |
 |       ClockSerializer                |     0.034 |
-|       DataEncoders[0].DataSerializer |     0.037 |
+|       DataEncoders[0].DataSerializer |     0.036 |
 |       DataEncoders[1].DataSerializer |     0.037 |
 |       DataEncoders[2].DataSerializer |     0.037 |
-|   u_blk_mem_gen_0                    |     0.003 |
-|     U0                               |     0.003 |
-|       inst_blk_mem_gen               |     0.003 |
+|   u_blk_mem_gen_0                    |     0.004 |
+|     U0                               |     0.004 |
+|       inst_blk_mem_gen               |     0.004 |
 |   u_qspi_slave                       |     0.003 |
 +--------------------------------------+-----------+
 

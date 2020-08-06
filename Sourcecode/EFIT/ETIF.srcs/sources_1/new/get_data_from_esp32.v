@@ -26,8 +26,8 @@ parameter addr_width = 15//地址15bit
 )(
 input clk,//100MHZ
 input rst_n,
-input Set_X,
-input Set_Y,
+input [11:0]Set_X,
+input [11:0]Set_Y,
 //RAM 
 output reg [addr_width-1:0] addr,//要读取的数据在RAM中的地址
 input [7:0]data_in,//RAM返回请求的数据
@@ -35,7 +35,7 @@ input RAM_en,//1：可以读取数据了
 //input enb,
 output reg [23:0] data_out
 );
-reg [31:0] width=0,deepth=0,x_lower,x_higher,y_lower,y_higher;//储存图片宽度、长度,Set_X、Set_Y上下限
+reg [31:0] width=0,deepth=0,x_lower=0,x_higher=0,y_lower=0,y_higher=0;//储存图片宽度、长度,Set_X、Set_Y上下限
 reg [3:0] sub=0,sub1=0;//sub是mem_Img_data下角标0~15,表示对应的寄存器;sub1是读取宽度和长度时使用的下标
 reg [7:0] mem_Img_format [0:7];//mem_Img_format为8个8位寄存器的数组，用于存储图片格式(mem_Img_format[0][3:0]寄存器存储图片宽度，mem_Img_format[1][3:0]寄存器存储图片长度。
 integer i=0,temp;//format_en=1表示已经读取宽度、长度。因为我们的图片数据1bit就表示像素颜色（黑色或者白色），而一次从RAM中读取8bit所以就是一次就读出8个像素点的颜色，所以就需要用temp来分别提取data_in里的数据
@@ -141,8 +141,8 @@ begin
                             temp <= 0;
                             addr <= addr +1;
                         end
-                        else
-                            data_out <= {24{data_in[7-temp]}};//从RAM读取下一段8bit数据
+//                        else
+//                            data_out <= {24{data_in[7-temp]}};//从RAM读取下一段8bit数据
                         end
                     else
                         data_out <= 24'hffffff;

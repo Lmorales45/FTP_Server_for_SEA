@@ -1,7 +1,7 @@
 Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
 --------------------------------------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
-| Date         : Wed Aug  5 16:01:37 2020
+| Date         : Thu Aug  6 17:03:27 2020
 | Host         : ThinkPad running 64-bit major release  (build 9200)
 | Command      : report_methodology -file EFIT_methodology_drc_routed.rpt -pb EFIT_methodology_drc_routed.pb -rpx EFIT_methodology_drc_routed.rpx
 | Design       : EFIT
@@ -23,13 +23,13 @@ Table of Contents
           Floorplan: design_1
       Design limits: <entire design considered>
              Max violations: <unlimited>
-             Violations found: 119
+             Violations found: 118
 +-----------+----------+-------------------------------------------------+------------+
 | Rule      | Severity | Description                                     | Violations |
 +-----------+----------+-------------------------------------------------+------------+
 | TIMING-6  | Warning  | No common primary clock between related clocks  | 4          |
 | TIMING-16 | Warning  | Large setup violation                           | 48         |
-| TIMING-17 | Warning  | Non-clocked sequential cell                     | 62         |
+| TIMING-17 | Warning  | Non-clocked sequential cell                     | 61         |
 | XDCB-5    | Warning  | Runtime inefficient way to find pin objects     | 1          |
 | XDCC-5    | Warning  | User Non-Timing constraint/property overwritten | 4          |
 +-----------+----------+-------------------------------------------------+------------+
@@ -58,242 +58,242 @@ Related violations: <none>
 
 TIMING-16#1 Warning
 Large setup violation  
-There is a large setup violation of -2.072 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[16]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -1.693 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/data_out_reg[23]/D (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#2 Warning
 Large setup violation  
-There is a large setup violation of -2.072 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[17]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.219 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[24]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#3 Warning
 Large setup violation  
-There is a large setup violation of -2.072 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[18]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.219 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[25]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#4 Warning
 Large setup violation  
-There is a large setup violation of -2.072 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[19]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.219 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[26]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#5 Warning
 Large setup violation  
-There is a large setup violation of -2.213 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[20]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.219 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[27]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#6 Warning
 Large setup violation  
-There is a large setup violation of -2.213 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[21]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.227 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[28]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#7 Warning
 Large setup violation  
-There is a large setup violation of -2.213 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[22]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.227 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[29]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#8 Warning
 Large setup violation  
-There is a large setup violation of -2.213 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[23]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.227 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[30]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#9 Warning
 Large setup violation  
-There is a large setup violation of -2.221 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[12]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.227 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[31]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#10 Warning
 Large setup violation  
-There is a large setup violation of -2.221 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[13]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.268 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[20]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#11 Warning
 Large setup violation  
-There is a large setup violation of -2.221 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[14]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.268 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[21]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#12 Warning
 Large setup violation  
-There is a large setup violation of -2.221 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[15]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.268 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[22]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#13 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[10]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.268 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[23]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#14 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[11]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.281 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[16]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#15 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[24]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.281 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[17]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#16 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[25]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.281 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[18]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#17 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[26]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.281 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[19]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#18 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[27]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.320 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[12]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#19 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[8]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.320 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[13]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#20 Warning
 Large setup violation  
-There is a large setup violation of -2.224 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[9]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.320 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[14]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#21 Warning
 Large setup violation  
-There is a large setup violation of -2.232 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/data_out_reg[7]/D (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.374 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[12]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#22 Warning
 Large setup violation  
-There is a large setup violation of -2.363 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[4]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.374 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[13]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#23 Warning
 Large setup violation  
-There is a large setup violation of -2.363 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[5]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.374 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[14]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#24 Warning
 Large setup violation  
-There is a large setup violation of -2.363 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[6]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.374 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[15]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#25 Warning
 Large setup violation  
-There is a large setup violation of -2.363 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[7]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.397 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[10]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#26 Warning
 Large setup violation  
-There is a large setup violation of -2.366 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[28]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.397 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[11]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#27 Warning
 Large setup violation  
-There is a large setup violation of -2.366 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[29]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.397 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[8]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#28 Warning
 Large setup violation  
-There is a large setup violation of -2.366 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[30]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.397 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[9]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#29 Warning
 Large setup violation  
-There is a large setup violation of -2.366 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[31]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.399 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[4]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#30 Warning
 Large setup violation  
-There is a large setup violation of -2.367 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[0]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.399 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[5]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#31 Warning
 Large setup violation  
-There is a large setup violation of -2.367 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[1]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.399 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[6]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#32 Warning
 Large setup violation  
-There is a large setup violation of -2.367 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[2]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.399 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[7]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#33 Warning
 Large setup violation  
-There is a large setup violation of -2.367 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/temp_reg[3]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.408 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[0]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#34 Warning
 Large setup violation  
-There is a large setup violation of -2.391 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[12]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.408 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[1]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#35 Warning
 Large setup violation  
-There is a large setup violation of -2.391 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[13]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.408 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[2]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#36 Warning
 Large setup violation  
-There is a large setup violation of -2.391 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[14]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.408 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/temp_reg[3]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#37 Warning
 Large setup violation  
-There is a large setup violation of -2.400 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[4]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.450 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[10]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#38 Warning
 Large setup violation  
-There is a large setup violation of -2.400 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[5]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.450 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[11]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#39 Warning
 Large setup violation  
-There is a large setup violation of -2.400 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[6]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.450 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[8]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#40 Warning
 Large setup violation  
-There is a large setup violation of -2.400 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[7]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.450 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[9]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#41 Warning
 Large setup violation  
-There is a large setup violation of -2.440 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[10]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.452 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[4]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#42 Warning
 Large setup violation  
-There is a large setup violation of -2.440 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[11]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.452 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[5]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#43 Warning
 Large setup violation  
-There is a large setup violation of -2.440 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[8]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.452 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[6]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#44 Warning
 Large setup violation  
-There is a large setup violation of -2.440 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[9]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.452 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[7]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#45 Warning
 Large setup violation  
-There is a large setup violation of -2.539 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[0]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.602 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[0]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#46 Warning
 Large setup violation  
-There is a large setup violation of -2.539 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[1]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.602 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[1]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#47 Warning
 Large setup violation  
-There is a large setup violation of -2.539 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[2]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.602 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[2]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-16#48 Warning
 Large setup violation  
-There is a large setup violation of -2.539 ns between get_data_from_esp32_0/width_reg[0]/C (clocked by clk_out1_clk_wiz_0_1) and get_data_from_esp32_0/addr_reg[3]/CE (clocked by clk_out1_clk_wiz_0). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+There is a large setup violation of -2.602 ns between get_data_from_esp32_0/deepth_reg[0]/C (clocked by clk_out1_clk_wiz_0) and get_data_from_esp32_0/addr_reg[3]/CE (clocked by clk_out1_clk_wiz_0_1). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
 Related violations: <none>
 
 TIMING-17#1 Warning
@@ -478,130 +478,125 @@ Related violations: <none>
 
 TIMING-17#37 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/R_o_valid_reg/C is not reached by a timing clock
+The clock pin u_qspi_slave/Write_HL_reg/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#38 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/Write_HL_reg/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_add_reg/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#39 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_add_reg/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[0]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#40 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[0]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[10]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#41 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[10]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[1]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#42 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[1]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[2]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#43 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[2]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[3]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#44 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[3]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[4]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#45 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[4]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[5]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#46 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[5]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[6]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#47 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[6]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[7]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#48 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[7]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[8]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#49 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[8]/C is not reached by a timing clock
+The clock pin u_qspi_slave/addr_reg[9]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#50 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/addr_reg[9]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[0]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#51 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[0]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[1]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#52 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[1]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[2]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#53 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[2]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[3]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#54 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[3]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[4]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#55 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[4]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[5]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#56 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[5]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[6]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#57 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[6]/C is not reached by a timing clock
+The clock pin u_qspi_slave/count_reg[7]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#58 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/count_reg[7]/C is not reached by a timing clock
+The clock pin u_qspi_slave/temp_data_reg[0]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#59 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/temp_data_reg[0]/C is not reached by a timing clock
+The clock pin u_qspi_slave/temp_data_reg[1]/C is not reached by a timing clock
 Related violations: <none>
 
 TIMING-17#60 Warning
 Non-clocked sequential cell  
-The clock pin u_qspi_slave/temp_data_reg[1]/C is not reached by a timing clock
-Related violations: <none>
-
-TIMING-17#61 Warning
-Non-clocked sequential cell  
 The clock pin u_qspi_slave/temp_data_reg[2]/C is not reached by a timing clock
 Related violations: <none>
 
-TIMING-17#62 Warning
+TIMING-17#61 Warning
 Non-clocked sequential cell  
 The clock pin u_qspi_slave/temp_data_reg[3]/C is not reached by a timing clock
 Related violations: <none>

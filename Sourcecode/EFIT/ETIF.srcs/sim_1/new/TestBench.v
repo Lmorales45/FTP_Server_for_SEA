@@ -30,12 +30,13 @@ reg I_qspi_cs;
 reg I_qspi_clk;//qspi通信时钟
 reg clk_system;
 
-wire data_out;
+wire [23:0]data_out;
 wire RAM_en;
 wire addr;
 wire o_data;
 wire doutb;
 wire addrb;
+wire o_valid;
 
 qspi_slave slave_test(
     .I_qspi_clk  (I_qspi_clk)  , 
@@ -46,20 +47,23 @@ qspi_slave slave_test(
     .IO_qspi_io3 (qspi_d3)  , 
     .o_addr      (addr)    ,
     .o_data      (o_data)  ,//RAM数据写入端
-//    .o_valid     (o_valid), //RAM写使能端
+    .o_valid     (o_valid), //RAM写使能端
     .RAM_en(RAM_en)
 );
 
   blk_mem_gen_0 u_blk_mem_gen_0 (
       .clka(I_qspi_clk),    // input wire clka
-      .wea(1),      // input wire [0 : 0] wea RAM写使能端
+      .wea(o_valid),      // input wire [0 : 0] wea RAM写使能端
       .addra(addr),  // input wire [14 : 0] addra
       .dina(o_data),    // input wire [7 : 0] dina
       .clkb(clk_system),    // input wire clkb B端口数据读取要和HDMI Driver保持同步
       .addrb(addrb),  // input wire [14 : 0] addrb
       .doutb(doutb)  // output wire [7 : 0] doutb 输出给数据处理模块的数据
-);
-
+); 
+    wire X;
+    wire Y;
+    assign X=1000;
+    assign Y=500;
     //数据处理模块，提取图片像素信息并返回给HDMI Driver
     get_data_from_esp32 get_data_from_esp32_0(
          .clk(clk_system),
@@ -67,8 +71,8 @@ qspi_slave slave_test(
          .addr(addrb),  //output addr
          .data_in(doutb),//读取RAM数据(doutb)
          .data_out(data_out),//发送图片数据给HDMI Driver
-         .Set_X(1000),
-         .Set_Y(500),
+         .Set_X(X),
+         .Set_Y(Y),
          .RAM_en(RAM_en)
     );
 
@@ -84,8 +88,8 @@ I_qspi_cs=1;
 I_qspi_clk=0;
 #10;
 rst_n=1;
+#50;//qspi_d0通道先发送8bit指令
 I_qspi_cs=0;
-#50;
 qspi_d0=0;
 #10;
 qspi_d0=0;
@@ -117,8 +121,12 @@ qspi_d0=0;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=0;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=0;
-
-#10;//宽度0
+#40;
+#10;//宽度100
+{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
+#10;
+{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
+#10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
@@ -130,30 +138,26 @@ qspi_d0=0;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0110;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0100;
-#10;
+#10;//长度100
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
-#10;//长度1
+#10;//长度100
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
-#10;//长度1
+#10;//长度100
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
-#10;//长度1
-{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
-#10;
-{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
-#10;//长度1
+#10;//长度100
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0110;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0100;
 #10;//数据2其实是八个像素点
-{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
+{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b1010;
 #10;
-{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0010;
+{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b1010;
 //#10;//数据3其实是八个像素点
 //{qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b0000;
 //#10;
@@ -161,10 +165,13 @@ qspi_d0=0;
 //0xff表示传输结束
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b1111;
+rst_n=0;
 #10;
 {qspi_d3,qspi_d2,qspi_d1,qspi_d0}=4'b1111;
-
-
+I_qspi_cs=1;//一次通信结束
+#35;
+rst_n=1;
+#20;
 $stop;
 end
 always #5 I_qspi_clk=~I_qspi_clk;

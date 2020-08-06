@@ -58,9 +58,9 @@ module EFIT(
     wire [11:0]Set_X;
     wire [11:0]Set_Y;
     
-    wire [31:0] addr;
+    wire [31:0] addr_32;
     wire [7:0]  o_data;
-    wire [7:0]  i_data;
+//    wire [7:0]  i_data;
     wire o_valid;
     
     
@@ -76,21 +76,21 @@ module EFIT(
         .IO_qspi_io1 (qspi_d1)  ,
         .IO_qspi_io2 (qspi_d2)  , 
         .IO_qspi_io3 (qspi_d3)  , 
-        .o_addr      (addr)    ,
+        .o_addr      (addr_32)    ,
         .o_data      (o_data)  ,//RAM数据写入端
-//        .i_data      (i_data)  ,//RAM数据读取端
         .o_valid     (o_valid), //RAM写使能端
         .RAM_en(RAM_en)
     );
-
-    wire [31:0] addrb;
-    wire [7:0] dinb;
+    
+    
+    wire [14:0] addrb;
+    wire [23:0] dinb;
     wire [7:0] doutb;
     //RAM
     blk_mem_gen_0 u_blk_mem_gen_0 (
       .clka(I_qspi_clk),    // input wire clka
       .wea(o_valid),      // input wire [0 : 0] wea RAM写使能端
-      .addra(addr),  // input wire [14 : 0] addra
+      .addra(addr_32[14:0]),  // input wire [14 : 0] addra
       .dina(o_data),    // input wire [7 : 0] dina
       .clkb(clk_system),    // input wire clkb B端口数据读取要和HDMI Driver保持同步
       .addrb(addrb),  // input wire [14 : 0] addrb
@@ -123,7 +123,7 @@ module EFIT(
         .PixelClk(clk_system));
     
     //生成HDMI驱动时钟
-        clk_wiz_0 clk_10(.clk_out1(clk_system),.clk_in1(clk));
+        clk_wiz_0 clk_10(.clk_out1(clk_system),.clk_in1(clk),.resetn(rst_n));
     //HDMI驱动
         Driver_HDMI_0 Driver_HDMI0(
             .clk(clk_system),        //Clock148.5MHZ

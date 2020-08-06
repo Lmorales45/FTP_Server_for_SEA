@@ -47,36 +47,22 @@ localparam   INS_QWrite_Quad   =   8'b00110010  ; //32H，QSPI写指令往RAM里写数据
 localparam   INS_FRead_Quad    =   8'b01101011  ; //6BH，QSPI读指令
 
 //registers of output
-reg         [addr_width-1:0]         R_o_addr           ;
-reg         [data_width-1:0]         R_o_data           ;
-reg                                  R_o_valid          ;  
-reg                                  R_RAM_en           ;
+reg         [addr_width-1:0]         R_o_addr =0          ;
+reg         [data_width-1:0]         R_o_data =0          ;
+reg                                  R_o_valid =0         ;  
+reg                                  R_RAM_en =0        ;
 
 assign o_addr  = R_o_addr;
 assign o_data  = {R_o_data[7:4],IO_qspi_io3,IO_qspi_io2,IO_qspi_io1,IO_qspi_io0};
-assign o_valid = R_o_valid;
+assign o_valid = 1;//RAM的wea=1才能往里写
 assign RAM_en  = R_RAM_en;
 
-// QSPI I/O
-//reg         R_qspi_io0          ;
-//reg         R_qspi_io1          ;
-//reg         R_qspi_io2          ;
-//reg         R_qspi_io3          ;          
-//reg         R_qspi_io0_out_en   ;
-//reg         R_qspi_io1_out_en   ;
-//reg         R_qspi_io2_out_en   ;
-//reg         R_qspi_io3_out_en   ;
-
-//assign IO_qspi_io0     =   R_qspi_io0_out_en ? R_qspi_io0 :1'bz;                
-//assign IO_qspi_io1     =   R_qspi_io1_out_en ? R_qspi_io1 :1'bz;                
-//assign IO_qspi_io2     =   R_qspi_io2_out_en ? R_qspi_io2 :1'bz ;                
-//assign IO_qspi_io3     =   R_qspi_io3_out_en ? R_qspi_io3 :1'bz ;
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // counter
 ////////////////////////////////////////////////////////////////////////////////////////////
 //count: counter of qspi_clk rising
-reg     [7:0]   count;
+reg     [7:0]   count=0;
 always @(posedge I_qspi_clk or posedge I_qspi_cs)
 begin
     if (I_qspi_cs) begin
@@ -102,7 +88,7 @@ end
 ////////////////////////////////////////////////////////////////////////////////////////////  
 //R_INS: store the instructions from qspi
 //esp32传输数据是从高位开始
-reg [7:0] R_INS;
+reg [7:0] R_INS=0;
 always @(posedge I_qspi_clk or posedge I_qspi_cs)
 begin
     if (I_qspi_cs) begin
@@ -118,41 +104,12 @@ begin
 end
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// I/O enable
-////////////////////////////////////////////////////////////////////////////////////////////
-//R_qspi_io_out_en: enable of Three-state gate (0:input , 1:output)
-//always @(posedge I_qspi_clk or posedge I_qspi_cs)
-//begin
-//    if (I_qspi_cs) begin
-//        R_qspi_io0_out_en <= 0;
-//        R_qspi_io1_out_en <= 0;
-//        R_qspi_io2_out_en <= 0;
-//        R_qspi_io3_out_en <= 0;
-//    end
-//    else 
-//    begin
-//        if ((R_INS == INS_FRead_Quad )&&(count >= 19 ))
-//        begin
-//        R_qspi_io0_out_en <= 1;
-//        R_qspi_io1_out_en <= 1;
-//        R_qspi_io2_out_en <= 1;
-//        R_qspi_io3_out_en <= 1;
-//        end
-//        else
-//        begin
-//        R_qspi_io0_out_en <= 0;
-//        R_qspi_io1_out_en <= 0;
-//        R_qspi_io2_out_en <= 0;
-//        R_qspi_io3_out_en <= 0;
-//        end
-//    end
-//end
 
 ////////////////////////////////////////////////////////////////////////////////////////////
 // ADDR
 ////////////////////////////////////////////////////////////////////////////////////////////
 //addr: Store the qspi address
-reg [addr_width-1:0] addr;
+reg [addr_width-1:0] addr=0;
 always @(posedge I_qspi_clk or posedge I_qspi_cs)
 begin
     if (I_qspi_cs) 
@@ -173,7 +130,7 @@ begin
     end
 end
 //addr_add: Assist to auto-increment of the address
-reg addr_add;
+reg addr_add=0;
 always @(posedge I_qspi_clk or posedge I_qspi_cs)
 begin
     if (I_qspi_cs) 
@@ -206,7 +163,7 @@ end
 // WRITE
 ////////////////////////////////////////////////////////////////////////////////////////////
 //Write_HL: Assist in determining the input data (0:high byte , 1:low byte)
-reg Write_HL;  
+reg Write_HL=0;  
 always @(posedge I_qspi_clk or posedge I_qspi_cs)
 begin
     if (I_qspi_cs) 
@@ -252,58 +209,5 @@ begin
 end
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-// READ
-////////////////////////////////////////////////////////////////////////////////////////////
-//reg Read_HL; //Assist in determining the output data (0:high byte , 1:low byte)
-//always @(posedge I_qspi_clk or posedge I_qspi_cs)
-//begin
-//    if (I_qspi_cs) 
-//    begin
-//        Read_HL <= 0;//Read_HL=1读取RAM数据
-//    end
-//    else 
-//    begin 
-//        if ((R_INS == INS_FRead_Quad )&&(count >= 19 ))
-//            Read_HL <= !Read_HL;
-//        else
-//            Read_HL <= 0;
-//    end
-//end
-//R_qspi_io : output data to RAM
-//always @(posedge I_qspi_clk or posedge I_qspi_cs)
-//begin
-//    if (I_qspi_cs) 
-//    begin
-//        R_qspi_io0 <= 0;
-//        R_qspi_io1 <= 0;
-//        R_qspi_io2 <= 0;
-//        R_qspi_io3 <= 0;
-//    end
-//    else 
-//    begin 
-//        if ((R_INS == INS_FRead_Quad )&&(count >= 19 ))
-//            if (Read_HL)
-//            begin
-//                R_qspi_io0 <= i_data[0];
-//                R_qspi_io1 <= i_data[1];
-//                R_qspi_io2 <= i_data[2];
-//                R_qspi_io3 <= i_data[3];
-//            end
-//            else
-//            begin
-//                R_qspi_io0 <= i_data[4];
-//                R_qspi_io1 <= i_data[5];
-//                R_qspi_io2 <= i_data[6];
-//                R_qspi_io3 <= i_data[7];
-//            end
-//        else
-//        begin
-//            R_qspi_io0 <= 0;
-//            R_qspi_io1 <= 0;
-//            R_qspi_io2 <= 0;
-//            R_qspi_io3 <= 0;
-//        end
-//    end
-//end
 
 endmodule
