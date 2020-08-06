@@ -20,7 +20,7 @@
  */
 // 2017: modified by @robo8080      https://github.com/robo8080/ESP32_FTPServer_SD
 // 2019: modified by @fa1ke5        https://github.com/fa1ke5/ESP32_FTPServer_SD_MMC
-// 2020: modified by @Zuoqiu-Yingyi https://github.com/Zuoqiu-Yingyi/FTP_Server_for_SEA/tree/master/Sourcecode/FTPServer_code
+// 2020: modified by @Zuoqiu-Yingyi https://github.com/Zuoqiu-Yingyi/FTP_Server_for_SEA/tree/master/Sourcecode/FTPServer
 
 /*******************************************************************************
  **                                                                            **
