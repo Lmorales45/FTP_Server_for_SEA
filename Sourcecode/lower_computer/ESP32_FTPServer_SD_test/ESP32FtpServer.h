@@ -28,19 +28,6 @@
  **                                                                            **
  *******************************************************************************/
 
-// Uncomment to print debugging info to console attached to ESP8266
-
-// Test information (An identifier for each branch) will be printed to Serial after definition
-// 定义后将在每个分支中向控制台打印唯一标识, 方便快速快速定位
-// #define FTP_DEBUG
-
-// Run log will be printed to Serial after definition
-// 定义后将打印运行日志
-#define FTP_LOG
-
-// Setting to true will start new features
-// 设置为ture将启用FTP服务器的新特性
-#define FTP_NEW_FEATURES ture
 
 #ifndef FTP_SERVERESP_H
 
@@ -50,6 +37,20 @@
 #include <FS.h>
 #include <SD_MMC.h>
 #include <WiFiClient.h>
+
+// Uncomment to print debugging info to console attached to ESP8266
+
+// Test information (An identifier for each branch) will be printed to Serial after definition
+// 定义后将在每个分支中向控制台打印唯一标识, 方便快速快速定位
+#define FTP_DEBUG
+
+// Run log will be printed to Serial after definition
+// 定义后将打印运行日志
+#define FTP_LOG
+
+// Setting to true will start new features
+// 设置为ture将启用FTP服务器的新特性
+#define FTP_NEW_FEATURES ture
 
 #define FTP_SERVER_VERSION "FTP-2020-08-06"
 
