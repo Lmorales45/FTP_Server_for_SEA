@@ -1,3 +1,0 @@
-Driver_HDMI.v,verilog,xil_defaultlib,../../../../ETIF.srcs/sources_1/ip/Driver_HDMI_0/sim/Driver_HDMI.v,
-Driver_HDMI_0.v,verilog,xil_defaultlib,../../../../ETIF.srcs/sources_1/ip/Driver_HDMI_0/sim/Driver_HDMI_0.v,
-glbl.v,Verilog,xil_defaultlib,glbl.v

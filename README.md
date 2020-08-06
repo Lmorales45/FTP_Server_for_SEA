@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板, 目标为将项目[ESP32_FTPServer_SD_MMC]([spartan-edge-esp32-boot](https://github.com/Pillar1989/spartan-edge-esp32-boot))移植到SEA平台并再此基础上添加新的功能与特性
+本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板, 目标为将项目[ESP32_FTPServer_SD_MMC](https://github.com/Pillar1989/spartan-edge-esp32-boot)移植到SEA平台并再此基础上添加新的功能与特性
 
 ### 项目功能
 
@@ -137,7 +137,7 @@
 | \|-- ExecutableFiles                                                    | 项目可执行文件            |
 | &nbsp;&emsp; \|-- EFIT.bit                                              | FPGA接收并显示图片        |
 | \|-- Sourcecode                                                         | 项目源码                  |
-| &nbsp;&emsp; \|-- EFIT_1.1                                              | vivado工程-接收并显示图片 |
+| &nbsp;&emsp; \|-- EFIT                                                  | vivado工程-接收并显示图片 |
 | &nbsp;&emsp; \|-- FTPServer                                             | FTP服务器项目             |
 | &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- FTPServer.ino               | FTP服务器项目文件         |
 | &nbsp;&emsp; &nbsp;&emsp; &nbsp;&emsp; \|-- ESP32FtpServer.cpp          | FTP服务器源文件           |
