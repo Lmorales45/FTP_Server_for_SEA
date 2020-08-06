@@ -1,0 +1,16 @@
+# compile verilog/system verilog design source files
+verilog xil_defaultlib  --include "../../../../ETIF.srcs/sources_1/ip/clk_wiz_0" \
+"../../../../ETIF.srcs/sources_1/ip/Driver_HDMI_0/sim/Driver_HDMI.v" \
+"../../../../ETIF.srcs/sources_1/ip/Driver_HDMI_0/sim/Driver_HDMI_0.v" \
+"../../../../ETIF.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0_clk_wiz.v" \
+"../../../../ETIF.srcs/sources_1/ip/clk_wiz_0/clk_wiz_0.v" \
+"../../../../ETIF.srcs/sources_1/ip/blk_mem_gen_0/sim/blk_mem_gen_0.v" \
+"../../../../ETIF.srcs/sources_1/new/get_data_from_esp32.v" \
+"../../../../ETIF.srcs/sources_1/new/qspi_slave.v" \
+"../../../../ETIF.srcs/sources_1/new/EFIT.v" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

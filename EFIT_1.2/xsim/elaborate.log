@@ -1,0 +1,61 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: E:/Vivado18.3/Xilinx18.3/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe -wto 0d0047f0ea1848caa6ccc5a62d692505 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L blk_mem_gen_v8_4_2 -L unisims_ver -L unimacro_ver -L secureip -L xpm --snapshot EFIT_behav xil_defaultlib.EFIT xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+WARNING: [VRFC 10-3715] size mismatch in mixed language port association, vhdl port 'arst_n' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:113]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 15 for port 'addra' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:93]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 15 for port 'addrb' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:96]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 15 for port 'addr' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:104]
+WARNING: [VRFC 10-3091] actual bit length 8 differs from formal bit length 24 for port 'data_out' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:106]
+WARNING: [VRFC 10-3091] actual bit length 12 differs from formal bit length 1 for port 'Set_X' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:107]
+WARNING: [VRFC 10-3091] actual bit length 12 differs from formal bit length 1 for port 'Set_Y' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:108]
+WARNING: [VRFC 10-3091] actual bit length 32 differs from formal bit length 1 for port 'Video_Mode' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:131]
+WARNING: [VRFC 10-3091] actual bit length 8 differs from formal bit length 24 for port 'RGB_In' [E:/Vivado18.3/programs/ETIF/ETIF.srcs/sources_1/new/EFIT.v:132]
+Completed static elaboration
+Starting simulation data flow analysis
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling package std.standard
+Compiling package std.textio
+Compiling package ieee.std_logic_1164
+Compiling package ieee.numeric_std
+Compiling package unisim.vcomponents
+Compiling package ieee.std_logic_arith
+Compiling package ieee.std_logic_signed
+Compiling package ieee.vital_timing
+Compiling package ieee.vital_primitives
+Compiling package unisim.vpkg
+Compiling package xil_defaultlib.dvi_constants
+Compiling module xil_defaultlib.qspi_slave
+Compiling module blk_mem_gen_v8_4_2.blk_mem_gen_v8_4_2_output_stage(...
+Compiling module blk_mem_gen_v8_4_2.blk_mem_gen_v8_4_2_output_stage(...
+Compiling module blk_mem_gen_v8_4_2.blk_mem_gen_v8_4_2_softecc_outpu...
+Compiling module blk_mem_gen_v8_4_2.blk_mem_gen_v8_4_2_mem_module(C_...
+Compiling module blk_mem_gen_v8_4_2.blk_mem_axi_regs_fwd_v8_4(C_DATA...
+Compiling module blk_mem_gen_v8_4_2.blk_mem_gen_v8_4_2(C_FAMILY="spa...
+Compiling module xil_defaultlib.blk_mem_gen_0
+Compiling module xil_defaultlib.get_data_from_esp32
+Compiling architecture plle2_adv_v of entity unisim.PLLE2_ADV [\PLLE2_ADV(clkfbout_mult=10,clki...]
+Compiling architecture behavioral of entity xil_defaultlib.SyncAsync [\SyncAsync(kresetto='1')\]
+Compiling architecture behavioral of entity xil_defaultlib.ResetBridge [resetbridge_default]
+Compiling architecture behavioral of entity xil_defaultlib.SyncAsync [syncasync_default]
+Compiling architecture behavioral of entity xil_defaultlib.ClockGen [\ClockGen(kclkprimitive="PLL")(1...]
+Compiling architecture behavioral of entity xil_defaultlib.TMDS_Encoder [tmds_encoder_default]
+Compiling architecture obufds_v of entity unisim.OBUFDS [\OBUFDS(iostandard="TMDS_33")(1,...]
+Compiling secureip modules ...
+Compiling architecture oserdese2_v of entity unisim.OSERDESE2 [\OSERDESE2(data_rate_tq="SDR",da...]
+Compiling architecture oserdese2_v of entity unisim.OSERDESE2 [\OSERDESE2(data_rate_tq="SDR",da...]
+Compiling architecture behavioral of entity xil_defaultlib.OutputSERDES [outputserdes_default]
+Compiling architecture behavioral of entity xil_defaultlib.rgb2dvi [\rgb2dvi(kclkprimitive="PLL",krs...]
+Compiling architecture rgb2dvi_0_arch of entity xil_defaultlib.rgb2dvi_0 [rgb2dvi_0_default]
+Compiling module unisims_ver.IBUF
+Compiling module unisims_ver.MMCME2_ADV(CLKFBOUT_MULT_F=37.12...
+Compiling module unisims_ver.BUFG
+Compiling module xil_defaultlib.clk_wiz_0_clk_wiz
+Compiling module xil_defaultlib.clk_wiz_0
+Compiling module xil_defaultlib.Driver_HDMI_default
+Compiling module xil_defaultlib.Driver_HDMI_0
+Compiling module xil_defaultlib.EFIT
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot EFIT_behav
