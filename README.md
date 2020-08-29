@@ -4,7 +4,7 @@
 
 ## 项目简介
 
-本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板, 目标为将项目[ESP32_FTPServer_SD_MMC](https://github.com/Pillar1989/spartan-edge-esp32-boot)移植到SEA平台并再此基础上添加新的功能与特性
+本项目基于挂载microSD闪存卡的<abbr title="Spartan Edge Accelerator Board">SEA</abbr>开发板, 目标为将项目[ESP32_FTPServer_SD_MMC](https://github.com/fa1ke5/ESP32_FTPServer_SD_MMC)移植到SEA平台并再此基础上添加新的功能与特性
 
 ### 项目功能
 
